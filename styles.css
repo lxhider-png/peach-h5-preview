@@ -1,0 +1,579 @@
+:root {
+  --paper: #f4f2ec;
+  --paper-bright: #fbfaf7;
+  --ink: #29332d;
+  --ink-soft: #657067;
+  --line: rgba(41, 51, 45, 0.18);
+  --peach: #d47f92;
+  --peach-deep: #ad586d;
+  --leaf: #526a4d;
+  --pollen: #d7a53b;
+  --outside: #d8dbd5;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+  background: var(--outside);
+  color: var(--ink);
+  font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+button {
+  font: inherit;
+}
+
+.experience {
+  position: relative;
+  width: min(100vw, calc(100dvh * 9 / 16));
+  height: min(100dvh, calc(100vw * 16 / 9));
+  aspect-ratio: 9 / 16;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--paper);
+  box-shadow: 0 0 32px rgba(41, 51, 45, 0.16);
+}
+
+.paper-texture {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.16;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.2'/%3E%3C/svg%3E");
+}
+
+.scene {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  overflow: hidden;
+  transition: opacity 420ms ease;
+}
+
+.scene.is-active {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.primary-action {
+  min-height: 48px;
+  padding: 0 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  border: 1px solid var(--ink);
+  border-radius: 4px;
+  background: var(--ink);
+  color: var(--paper-bright);
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.primary-action:focus-visible,
+.back-button:focus-visible,
+.swipe-action:focus-visible,
+.bee:focus-visible {
+  outline: 2px solid var(--peach-deep);
+  outline-offset: 3px;
+}
+
+/* Scene 01 */
+.scene-start {
+  background: var(--paper-bright);
+}
+
+.start-art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.start-copy {
+  position: absolute;
+  left: 22px;
+  right: 22px;
+  bottom: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 14px;
+  text-align: right;
+}
+
+.start-copy p {
+  max-width: 13em;
+  font-family: "Songti SC", "SimSun", serif;
+  font-size: 18px;
+  line-height: 1.55;
+}
+
+/* Shared heading */
+.scene-heading {
+  position: absolute;
+  z-index: 12;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 78px;
+  padding: 18px 18px 10px;
+  display: grid;
+  grid-template-columns: 36px 1fr;
+  gap: 9px;
+  align-items: start;
+  background: var(--paper);
+}
+
+.scene-heading.is-overlay {
+  background: rgba(244, 242, 236, 0.9);
+  border-bottom: 1px solid rgba(41, 51, 45, 0.08);
+}
+
+.back-button {
+  width: 36px;
+  height: 36px;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  font-size: 23px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.chapter-index {
+  color: var(--peach-deep);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.scene-heading h1 {
+  margin-top: 4px;
+  font-family: "Songti SC", "SimSun", serif;
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+/* Chapter 01 */
+.scene-product {
+  padding-top: 78px;
+  background: var(--paper);
+}
+
+.product-figure {
+  position: relative;
+  height: 43%;
+  overflow: hidden;
+  background: var(--paper-bright);
+}
+
+.product-figure img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center 46%;
+}
+
+.product-figure figcaption {
+  position: absolute;
+  left: 16px;
+  bottom: 12px;
+  padding: 5px 8px;
+  border-left: 2px solid var(--leaf);
+  background: rgba(251, 250, 247, 0.88);
+  color: var(--ink-soft);
+  font-size: 11px;
+}
+
+.product-record {
+  padding: 18px 22px 0;
+}
+
+.product-name {
+  font-family: "Songti SC", "SimSun", serif;
+  font-size: 20px;
+  line-height: 1.4;
+}
+
+.product-record dl {
+  margin-top: 10px;
+  border-top: 1px solid var(--line);
+}
+
+.product-record dl div {
+  min-height: 34px;
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  align-items: center;
+  border-bottom: 1px solid var(--line);
+  font-size: 13px;
+}
+
+.product-record dt {
+  color: var(--ink-soft);
+}
+
+.product-record dd {
+  margin: 0;
+  text-align: right;
+}
+
+.swipe-action {
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  bottom: 18px;
+  min-height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--ink);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.swipe-arrow {
+  display: inline-grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--ink);
+  border-radius: 50%;
+  animation: swipeHint 1.7s ease-in-out infinite;
+}
+
+@keyframes swipeHint {
+  0%, 100% { transform: translateY(2px); }
+  50% { transform: translateY(-3px); }
+}
+
+/* Chapter 02 bloom */
+.bloom-stage {
+  position: absolute;
+  inset: 0;
+  background: var(--paper-bright);
+}
+
+.bloom-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 700ms ease;
+}
+
+.bloom-stage[data-phase="1"] .bloom-frame-1,
+.bloom-stage[data-phase="2"] .bloom-frame-2,
+.bloom-stage[data-phase="3"] .bloom-frame-3 {
+  opacity: 1;
+}
+
+.bloom-caption {
+  position: absolute;
+  z-index: 5;
+  left: 20px;
+  right: 20px;
+  bottom: 22px;
+  padding: 13px 0 0 14px;
+  border-top: 1px solid var(--ink);
+  background: rgba(244, 242, 236, 0.9);
+}
+
+.bloom-caption p {
+  font-family: "Songti SC", "SimSun", serif;
+  font-size: 21px;
+}
+
+.bloom-caption span {
+  display: block;
+  margin-top: 4px;
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/* Pollination */
+.pollination-stage {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: var(--paper-bright);
+}
+
+.flower-scene {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.assist-line {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+
+.assist-line path {
+  fill: none;
+  stroke: var(--peach-deep);
+  stroke-width: 0.7;
+  stroke-dasharray: 2.4 2.4;
+  vector-effect: non-scaling-stroke;
+}
+
+.pollination-stage.is-assisted .assist-line {
+  opacity: 0.9;
+}
+
+.target {
+  position: absolute;
+  z-index: 5;
+  width: 62px;
+  height: 62px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.target span {
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--peach-deep);
+  border-radius: 50%;
+  background: rgba(251, 250, 247, 0.2);
+}
+
+.target b {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 3px 6px;
+  background: rgba(251, 250, 247, 0.92);
+  color: var(--ink);
+  font-size: 11px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.target-anther {
+  left: 69%;
+  top: 35%;
+}
+
+.target-stigma {
+  left: 84%;
+  top: 19%;
+  opacity: 0.35;
+}
+
+.pollination-stage.has-pollen .target-anther {
+  opacity: 0.32;
+}
+
+.pollination-stage.has-pollen .target-stigma {
+  opacity: 1;
+}
+
+.pollination-stage.is-assisted .target {
+  width: 76px;
+  height: 76px;
+}
+
+.bee {
+  position: absolute;
+  z-index: 8;
+  left: 25%;
+  top: 79%;
+  width: 82px;
+  height: 82px;
+  transform: translate(-50%, -50%);
+  border: 0;
+  background: transparent;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+.bee.is-dragging {
+  cursor: grabbing;
+}
+
+.bee img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  filter: drop-shadow(0 4px 6px rgba(41, 51, 45, 0.24));
+  transition: transform 160ms ease;
+}
+
+.bee.is-dragging img {
+  transform: scale(1.06) rotate(-3deg);
+}
+
+.pollen-dots {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.bee.has-pollen .pollen-dots {
+  opacity: 1;
+}
+
+.pollen-dots i {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--pollen);
+  border: 1px solid rgba(90, 61, 13, 0.35);
+}
+
+.pollen-dots i:nth-child(1) { left: 36%; top: 47%; }
+.pollen-dots i:nth-child(2) { left: 46%; top: 55%; }
+.pollen-dots i:nth-child(3) { left: 55%; top: 45%; }
+
+.pollination-copy {
+  position: absolute;
+  z-index: 10;
+  left: 16px;
+  right: 16px;
+  bottom: 16px;
+  min-height: 74px;
+  padding: 12px 14px;
+  border-left: 2px solid var(--leaf);
+  background: rgba(244, 242, 236, 0.93);
+}
+
+.pollination-copy p {
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+.pollination-copy span {
+  display: block;
+  margin-top: 3px;
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+/* Completion */
+.scene-complete {
+  background: var(--paper);
+}
+
+.complete-art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.48;
+}
+
+.complete-copy {
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  bottom: 32px;
+  padding: 22px 0 0 18px;
+  border-top: 1px solid var(--ink);
+  background: rgba(244, 242, 236, 0.91);
+}
+
+.complete-copy h2 {
+  margin: 8px 0 14px;
+  font-family: "Songti SC", "SimSun", serif;
+  font-size: 27px;
+  font-weight: 500;
+}
+
+.complete-copy > p:not(.chapter-index) {
+  margin-top: 5px;
+  color: var(--ink-soft);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.complete-copy .primary-action {
+  margin-top: 20px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scene,
+  .bloom-frame,
+  .assist-line,
+  .bee img {
+    transition-duration: 1ms;
+  }
+
+  .swipe-arrow {
+    animation: none;
+  }
+}
+
+@media (max-height: 620px) {
+  .scene-heading {
+    height: 68px;
+    padding-top: 12px;
+  }
+
+  .scene-product {
+    padding-top: 68px;
+  }
+
+  .product-record {
+    padding-top: 12px;
+  }
+
+  .product-record dl div {
+    min-height: 30px;
+  }
+
+  .swipe-action {
+    min-height: 46px;
+    bottom: 12px;
+  }
+}

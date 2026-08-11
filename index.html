@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f4f2ec">
+  <meta name="description" content="从这一盒桃回到花开的时刻，认识产品并观察蜜蜂授粉。">
+  <title>一枝鲜桃｜认识这盒桃</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="experience" id="experience">
+    <div class="paper-texture" aria-hidden="true"></div>
+
+    <section class="scene scene-start is-active" data-scene="start" aria-label="开始页面">
+      <img class="start-art" src="assets/brand-cover.webp" alt="一枝鲜桃品牌桃果插画">
+      <div class="start-copy">
+        <p>从这一盒桃，回到一朵花。</p>
+        <button class="primary-action" id="start-button" type="button">
+          <span>开始认识这盒桃</span><span aria-hidden="true">→</span>
+        </button>
+      </div>
+    </section>
+
+    <section class="scene scene-product" data-scene="product" aria-label="第一章 认识这盒桃">
+      <header class="scene-heading">
+        <button class="back-button" type="button" data-back="start" aria-label="返回开始页面">←</button>
+        <div>
+          <p class="chapter-index">01 / 05</p>
+          <h1>认识这盒桃</h1>
+        </div>
+      </header>
+
+      <figure class="product-figure">
+        <img src="assets/product-visual.webp" alt="中油蟠7号黄油蟠桃及果实剖面插画">
+        <figcaption>一枝鲜桃 · 产品档案</figcaption>
+      </figure>
+
+      <div class="product-record" aria-label="产品信息">
+        <p class="product-name">中油蟠7号黄油蟠桃</p>
+        <dl>
+          <div><dt>品种</dt><dd>中油蟠7号</dd></div>
+          <div><dt>类型</dt><dd>黄肉油蟠桃</dd></div>
+          <div><dt>品牌</dt><dd>一枝鲜桃</dd></div>
+        </dl>
+      </div>
+
+      <button class="swipe-action" id="growth-button" type="button">
+        <span class="swipe-arrow" aria-hidden="true">↑</span>
+        <span>上滑进入生长故事</span>
+      </button>
+    </section>
+
+    <section class="scene scene-bloom" data-scene="bloom" aria-label="第二章 花开与授粉">
+      <header class="scene-heading is-overlay">
+        <button class="back-button" type="button" data-back="product" aria-label="返回认识这盒桃">←</button>
+        <div>
+          <p class="chapter-index">02 / 05</p>
+          <h1>花开与授粉</h1>
+        </div>
+      </header>
+
+      <div class="bloom-stage" id="bloom-stage" aria-live="polite">
+        <img class="bloom-frame bloom-frame-1" src="assets/bloom-01.webp" alt="桃花花芽膨大">
+        <img class="bloom-frame bloom-frame-2" src="assets/bloom-02.webp" alt="桃花初花">
+        <img class="bloom-frame bloom-frame-3" src="assets/bloom-03.webp" alt="桃花盛花">
+        <div class="bloom-caption">
+          <p id="bloom-phase">花芽膨大</p>
+          <span id="bloom-note">同一枝条，开始进入花期。</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene scene-pollination" data-scene="pollination" aria-label="第二章 蜜蜂授粉">
+      <header class="scene-heading is-overlay">
+        <button class="back-button" type="button" data-back="product" aria-label="返回认识这盒桃">←</button>
+        <div>
+          <p class="chapter-index">02 / 05</p>
+          <h1>花开与授粉</h1>
+        </div>
+      </header>
+
+      <div class="pollination-stage" id="pollination-stage">
+        <img class="flower-scene" src="assets/flower-scene.webp" alt="桃花枝头授粉场景">
+
+        <svg class="assist-line" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M25 79 C38 62 58 49 69 35 C76 27 80 22 84 18"></path>
+        </svg>
+
+        <div class="target target-anther" id="target-anther" aria-label="花药目标">
+          <span></span><b>花药</b>
+        </div>
+        <div class="target target-stigma" id="target-stigma" aria-label="柱头目标">
+          <span></span><b>柱头</b>
+        </div>
+
+        <button class="bee" id="bee" type="button" aria-label="拖动蜜蜂，先到花药，再到柱头">
+          <img src="assets/bee.webp" alt="" draggable="false">
+          <span class="pollen-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        </button>
+
+        <div class="pollination-copy" aria-live="polite">
+          <p id="pollination-status">拖动蜜蜂，先经过花药。</p>
+          <span id="pollination-detail">花药释放花粉，柱头接收花粉。</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene scene-complete" data-scene="complete" aria-label="授粉完成">
+      <img class="complete-art" src="assets/bloom-03.webp" alt="盛开的桃花枝条">
+      <div class="complete-copy">
+        <p class="chapter-index">02 / 05 · 本章结论</p>
+        <h2>授粉只是开始</h2>
+        <p>花粉从花药转移到柱头，是授粉。</p>
+        <p>接下来，还要经过花粉萌发和受精，果实才会开始形成。</p>
+        <button class="primary-action" id="replay-button" type="button">
+          <span aria-hidden="true">↻</span><span>重新观看</span>
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

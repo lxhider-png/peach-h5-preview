@@ -15,6 +15,12 @@
   var bee = document.getElementById("bee");
   var pollinationStatus = document.getElementById("pollination-status");
   var pollinationDetail = document.getElementById("pollination-detail");
+  var pollinationDetailImage = document.getElementById("pollination-detail-image");
+  var fertilizationStage = document.getElementById("fertilization-stage");
+  var fertilizationButton = document.getElementById("fertilization-button");
+  var fertilizationButtonLabel = document.getElementById("fertilization-button-label");
+  var fertilizationStatus = document.getElementById("fertilization-status");
+  var fertilizationDetail = document.getElementById("fertilization-detail");
   var reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   var state = {
@@ -31,7 +37,8 @@
       pollen: false,
       attempts: 0,
       complete: false
-    }
+    },
+    fertilizationStep: 0
   };
 
   function schedule(callback, delay) {
@@ -56,6 +63,7 @@
 
     if (name === "bloom") playBloomSequence();
     if (name === "pollination") resetPollination();
+    if (name === "fertilization") resetFertilization();
   }
 
   function playBloomSequence() {
@@ -96,8 +104,10 @@
     bee.style.left = "25%";
     bee.style.top = "79%";
     pollinationStage.classList.remove("has-pollen", "is-assisted");
+    pollinationDetailImage.src = "assets/ch1-anther-detail.webp";
+    pollinationDetailImage.alt = "桃花花药局部观察图";
     pollinationStatus.textContent = "拖动蜜蜂，先经过花药。";
-    pollinationDetail.textContent = "花药释放花粉，柱头接收花粉。";
+    pollinationDetail.textContent = "花药成熟后裂开，释放花粉。";
   }
 
   function pointInside(element, x, y) {
@@ -113,8 +123,10 @@
     state.bee.progressed = true;
     bee.classList.add("has-pollen");
     pollinationStage.classList.add("has-pollen");
+    pollinationDetailImage.src = "assets/ch1-pollen-grain.webp";
+    pollinationDetailImage.alt = "桃花花粉粒局部观察图";
     pollinationStatus.textContent = "花粉已经附着。";
-    pollinationDetail.textContent = "继续移动到另一朵花的柱头。";
+    pollinationDetail.textContent = "继续移动到画面最下方大花朵的柱头。";
   }
 
   function completePollination() {
@@ -124,9 +136,11 @@
     state.bee.dragging = false;
     bee.disabled = true;
     bee.classList.remove("is-dragging");
+    pollinationDetailImage.src = "assets/ch1-stigma-detail.webp";
+    pollinationDetailImage.alt = "桃花柱头与花柱纵剖面观察图";
     pollinationStatus.textContent = "花粉抵达柱头，授粉完成。";
-    pollinationDetail.textContent = "但授粉还不是受精。";
-    schedule(function () { showScene("complete"); }, reducedMotion ? 600 : 1500);
+    pollinationDetail.textContent = "柱头接收花粉，但授粉还不是受精。";
+    schedule(function () { showScene("fertilization"); }, reducedMotion ? 700 : 1500);
   }
 
   function beePointerDown(event) {
@@ -177,7 +191,9 @@
         pollinationStatus.textContent = state.bee.pollen
           ? "沿着提示路径，把花粉带到柱头。"
           : "沿着提示路径，先到花药，再到柱头。";
-        pollinationDetail.textContent = "目标区域已经扩大。";
+        pollinationDetail.textContent = state.bee.pollen
+          ? "目标在画面最下方的大花朵中央。"
+          : "目标区域已经扩大。";
       } else {
         pollinationStatus.textContent = state.bee.pollen
           ? "花粉已经附着，继续到柱头。"
@@ -194,6 +210,44 @@
     event.preventDefault();
     if (!state.bee.pollen) collectPollen();
     else completePollination();
+  }
+
+  function resetFertilization() {
+    state.fertilizationStep = 0;
+    fertilizationStage.dataset.step = "0";
+    fertilizationButton.disabled = false;
+    fertilizationButtonLabel.textContent = "轻触花粉，观察萌发";
+    fertilizationStatus.textContent = "授粉完成，但受精还没有发生。";
+    fertilizationDetail.textContent = "轻触柱头上的花粉，继续观察。";
+  }
+
+  function advanceFertilization() {
+    if (state.scene !== "fertilization") return;
+    if (state.fertilizationStep === 4) {
+      showScene("complete");
+      return;
+    }
+
+    state.fertilizationStep += 1;
+    fertilizationStage.dataset.step = String(state.fertilizationStep);
+
+    if (state.fertilizationStep === 1) {
+      fertilizationStatus.textContent = "花粉在柱头表面吸水萌发。";
+      fertilizationDetail.textContent = "花粉粒伸出花粉管，进入柱头组织。";
+      fertilizationButtonLabel.textContent = "继续观察花粉管生长";
+    } else if (state.fertilizationStep === 2) {
+      fertilizationStatus.textContent = "花粉管沿花柱向下生长。";
+      fertilizationDetail.textContent = "花粉管为精细胞建立通往子房的路径。";
+      fertilizationButtonLabel.textContent = "继续：进入子房";
+    } else if (state.fertilizationStep === 3) {
+      fertilizationStatus.textContent = "花粉管进入子房，向胚珠延伸。";
+      fertilizationDetail.textContent = "它继续寻找胚珠中的胚囊。";
+      fertilizationButtonLabel.textContent = "继续：抵达胚珠";
+    } else {
+      fertilizationStatus.textContent = "花粉管到达胚珠，释放精细胞。";
+      fertilizationDetail.textContent = "精细胞参与受精，新的发育过程由此开始。";
+      fertilizationButtonLabel.textContent = "查看本章结论";
+    }
   }
 
   function productPointerDown(event) {
@@ -223,6 +277,7 @@
   bee.addEventListener("pointerup", beePointerEnd);
   bee.addEventListener("pointercancel", beePointerEnd);
   bee.addEventListener("keydown", beeKeyboard);
+  fertilizationButton.addEventListener("click", advanceFertilization);
 
   document.addEventListener("visibilitychange", function () {
     if (document.hidden) clearTimers();

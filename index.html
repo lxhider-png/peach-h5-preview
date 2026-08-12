@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#f4f2ec">
-  <meta name="description" content="从这一盒桃回到花开的时刻，认识产品并观察蜜蜂授粉。">
+  <meta name="description" content="认识一盒桃，并观察桃花授粉、花粉萌发与受精。">
   <title>一枝鲜桃｜认识这盒桃</title>
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -15,7 +15,6 @@
     <section class="scene scene-start is-active" data-scene="start" aria-label="开始页面">
       <img class="start-art" src="assets/brand-cover.webp" alt="一枝鲜桃品牌桃果插画">
       <div class="start-copy">
-        <p>从这一盒桃，回到一朵花。</p>
         <button class="primary-action" id="start-button" type="button">
           <span>开始认识这盒桃</span><span aria-hidden="true">→</span>
         </button>
@@ -84,7 +83,7 @@
         <img class="flower-scene" src="assets/flower-scene.webp" alt="桃花枝头授粉场景">
 
         <svg class="assist-line" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-          <path d="M25 79 C38 62 58 49 69 35 C76 27 80 22 84 18"></path>
+          <path d="M25 79 C39 60 56 42 69 35 C64 45 56 55 47 61"></path>
         </svg>
 
         <div class="target target-anther" id="target-anther" aria-label="花药目标">
@@ -100,19 +99,61 @@
         </button>
 
         <div class="pollination-copy" aria-live="polite">
-          <p id="pollination-status">拖动蜜蜂，先经过花药。</p>
-          <span id="pollination-detail">花药释放花粉，柱头接收花粉。</span>
+          <img id="pollination-detail-image" src="assets/ch1-anther-detail.webp" alt="桃花花药局部观察图">
+          <div>
+            <p id="pollination-status">拖动蜜蜂，先经过花药。</p>
+            <span id="pollination-detail">花药成熟后裂开，释放花粉。</span>
+          </div>
         </div>
       </div>
     </section>
 
+    <section class="scene scene-fertilization" data-scene="fertilization" aria-label="第二章 花粉萌发与受精">
+      <header class="scene-heading is-overlay">
+        <button class="back-button" type="button" data-back="pollination" aria-label="返回授粉过程">←</button>
+        <div>
+          <p class="chapter-index">02 / 05 · 花朵内部</p>
+          <h1>花粉萌发与受精</h1>
+        </div>
+      </header>
+
+      <div class="fertilization-stage" id="fertilization-stage" data-step="0">
+        <img class="section-frame section-base" src="assets/ch1-section-01.webp" alt="桃花雌蕊纵剖面">
+        <img class="section-frame tube-frame tube-frame-1" src="assets/ch1-pollen-tube-01.webp" alt="花粉在柱头萌发">
+        <img class="section-frame tube-frame tube-frame-2" src="assets/ch1-pollen-tube-02.webp" alt="花粉管沿花柱生长">
+        <img class="section-frame tube-frame tube-frame-3" src="assets/ch1-pollen-tube-03.webp" alt="花粉管到达胚珠">
+
+        <div class="scientific-label label-stigma">柱头</div>
+        <div class="scientific-label label-style">花柱</div>
+        <div class="scientific-label label-ovary">子房</div>
+        <div class="scientific-label label-ovule">胚珠</div>
+
+        <button class="germination-action" id="fertilization-button" type="button">
+          <img src="assets/ch1-pollen-grain.webp" alt="">
+          <span id="fertilization-button-label">轻触花粉，观察萌发</span>
+        </button>
+
+        <ol class="process-progress" aria-label="受精过程">
+          <li data-process-step="1"><i></i><span>萌发</span></li>
+          <li data-process-step="2"><i></i><span>花柱</span></li>
+          <li data-process-step="3"><i></i><span>子房</span></li>
+          <li data-process-step="4"><i></i><span>胚珠</span></li>
+        </ol>
+      </div>
+
+      <div class="process-copy" aria-live="polite">
+        <p id="fertilization-status">授粉完成，但受精还没有发生。</p>
+        <span id="fertilization-detail">轻触柱头上的花粉，继续观察。</span>
+      </div>
+    </section>
+
     <section class="scene scene-complete" data-scene="complete" aria-label="授粉完成">
-      <img class="complete-art" src="assets/bloom-03.webp" alt="盛开的桃花枝条">
+      <img class="complete-art" src="assets/ch1-pollen-tube-03.webp" alt="花粉管到达胚珠的科学插画">
       <div class="complete-copy">
         <p class="chapter-index">02 / 05 · 本章结论</p>
-        <h2>授粉只是开始</h2>
-        <p>花粉从花药转移到柱头，是授粉。</p>
-        <p>接下来，还要经过花粉萌发和受精，果实才会开始形成。</p>
+        <h2>受精完成，果实开始形成</h2>
+        <p>花粉抵达柱头是授粉；花粉管到达胚珠并释放精细胞，才完成受精。</p>
+        <p>受精后，胚珠发育为种子，子房逐渐发育为果实。</p>
         <button class="primary-action" id="replay-button" type="button">
           <span aria-hidden="true">↻</span><span>重新观看</span>
         </button>

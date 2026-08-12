@@ -16,6 +16,14 @@
   var pollinationStatus = document.getElementById("pollination-status");
   var pollinationDetail = document.getElementById("pollination-detail");
   var pollinationDetailImage = document.getElementById("pollination-detail-image");
+  var pollenSlides = Array.prototype.slice.call(document.querySelectorAll("[data-pollen-slide]"));
+  var pollenDots = Array.prototype.slice.call(document.querySelectorAll("[data-pollen-dot]"));
+  var pollenNext = document.getElementById("pollen-next");
+  var pollenNextLabel = document.getElementById("pollen-next-label");
+  var anatomyFrames = Array.prototype.slice.call(document.querySelectorAll("[data-anatomy-frame]"));
+  var anatomyTabs = Array.prototype.slice.call(document.querySelectorAll("[data-anatomy-step]"));
+  var anatomyCallout = document.getElementById("anatomy-callout");
+  var anatomyNext = document.getElementById("anatomy-next");
   var fertilizationStage = document.getElementById("fertilization-stage");
   var fertilizationButton = document.getElementById("fertilization-button");
   var fertilizationButtonLabel = document.getElementById("fertilization-button-label");
@@ -38,6 +46,8 @@
       attempts: 0,
       complete: false
     },
+    pollenStep: 0,
+    anatomyStep: 0,
     fertilizationStep: 0
   };
 
@@ -63,6 +73,8 @@
 
     if (name === "bloom") playBloomSequence();
     if (name === "pollination") resetPollination();
+    if (name === "pollen") showPollenStep(0);
+    if (name === "anatomy") showAnatomyStep(0);
     if (name === "fertilization") resetFertilization();
   }
 
@@ -104,7 +116,7 @@
     bee.style.left = "25%";
     bee.style.top = "79%";
     pollinationStage.classList.remove("has-pollen", "is-assisted");
-    pollinationDetailImage.src = "assets/ch1-anther-detail.webp";
+    pollinationDetailImage.src = "assets/ch1-anther-scene.webp";
     pollinationDetailImage.alt = "桃花花药局部观察图";
     pollinationStatus.textContent = "拖动蜜蜂，先经过花药。";
     pollinationDetail.textContent = "花药成熟后裂开，释放花粉。";
@@ -123,7 +135,7 @@
     state.bee.progressed = true;
     bee.classList.add("has-pollen");
     pollinationStage.classList.add("has-pollen");
-    pollinationDetailImage.src = "assets/ch1-pollen-grain.webp";
+    pollinationDetailImage.src = "assets/ch1-pollen-release.webp";
     pollinationDetailImage.alt = "桃花花粉粒局部观察图";
     pollinationStatus.textContent = "花粉已经附着。";
     pollinationDetail.textContent = "继续移动到画面最下方大花朵的柱头。";
@@ -136,11 +148,11 @@
     state.bee.dragging = false;
     bee.disabled = true;
     bee.classList.remove("is-dragging");
-    pollinationDetailImage.src = "assets/ch1-stigma-detail.webp";
+    pollinationDetailImage.src = "assets/ch1-stigma-section.webp";
     pollinationDetailImage.alt = "桃花柱头与花柱纵剖面观察图";
     pollinationStatus.textContent = "花粉抵达柱头，授粉完成。";
     pollinationDetail.textContent = "柱头接收花粉，但授粉还不是受精。";
-    schedule(function () { showScene("fertilization"); }, reducedMotion ? 700 : 1500);
+    schedule(function () { showScene("pollen"); }, reducedMotion ? 700 : 1500);
   }
 
   function beePointerDown(event) {
@@ -212,6 +224,54 @@
     else completePollination();
   }
 
+  var pollenButtonLabels = [
+    "继续：放大花药",
+    "继续：花粉如何被携带",
+    "继续：放大一粒花粉",
+    "继续：花粉抵达哪里",
+    "继续：寻找受精位置"
+  ];
+
+  function showPollenStep(step) {
+    state.pollenStep = Math.max(0, Math.min(pollenSlides.length - 1, step));
+    pollenSlides.forEach(function (slide, index) {
+      slide.classList.toggle("is-active", index === state.pollenStep);
+    });
+    pollenDots.forEach(function (dot, index) {
+      dot.classList.toggle("is-current", index === state.pollenStep);
+      dot.setAttribute("aria-current", index === state.pollenStep ? "step" : "false");
+    });
+    pollenNextLabel.textContent = pollenButtonLabels[state.pollenStep];
+  }
+
+  function advancePollen() {
+    if (state.pollenStep < pollenSlides.length - 1) {
+      showPollenStep(state.pollenStep + 1);
+    } else {
+      showScene("anatomy");
+    }
+  }
+
+  var anatomyCopy = [
+    ["整花纵剖", "雄蕊环绕雌蕊，中央雌蕊连接柱头、花柱和子房。"],
+    ["花部结构", "花药位于雄蕊顶端；雌蕊位于花朵中央。"],
+    ["雌蕊纵剖", "柱头接收花粉，花柱是花粉管向下生长的通道，基部膨大处是子房。"],
+    ["子房与胚珠", "子房包围胚珠；受精发生在胚珠内部，而不是柱头表面。"],
+    ["胚珠内部", "花粉管最终进入胚珠，抵达胚囊并释放精细胞。"]
+  ];
+
+  function showAnatomyStep(step) {
+    state.anatomyStep = Math.max(0, Math.min(anatomyFrames.length - 1, step));
+    anatomyFrames.forEach(function (frame, index) {
+      frame.classList.toggle("is-active", index === state.anatomyStep);
+    });
+    anatomyTabs.forEach(function (tab, index) {
+      tab.classList.toggle("is-current", index === state.anatomyStep);
+      tab.setAttribute("aria-selected", index === state.anatomyStep ? "true" : "false");
+    });
+    anatomyCallout.innerHTML = "<b>" + anatomyCopy[state.anatomyStep][0] + "</b><span>" + anatomyCopy[state.anatomyStep][1] + "</span>";
+  }
+
   function resetFertilization() {
     state.fertilizationStep = 0;
     fertilizationStage.dataset.step = "0";
@@ -244,8 +304,8 @@
       fertilizationDetail.textContent = "它继续寻找胚珠中的胚囊。";
       fertilizationButtonLabel.textContent = "继续：抵达胚珠";
     } else {
-      fertilizationStatus.textContent = "花粉管到达胚珠，释放精细胞。";
-      fertilizationDetail.textContent = "精细胞参与受精，新的发育过程由此开始。";
+      fertilizationStatus.textContent = "花粉管进入胚珠，释放两个精细胞。";
+      fertilizationDetail.textContent = "一个与卵细胞结合形成受精卵，另一个参与形成胚乳。";
       fertilizationButtonLabel.textContent = "查看本章结论";
     }
   }
@@ -278,6 +338,14 @@
   bee.addEventListener("pointercancel", beePointerEnd);
   bee.addEventListener("keydown", beeKeyboard);
   fertilizationButton.addEventListener("click", advanceFertilization);
+  pollenNext.addEventListener("click", advancePollen);
+  pollenDots.forEach(function (dot) {
+    dot.addEventListener("click", function () { showPollenStep(Number(dot.dataset.pollenDot)); });
+  });
+  anatomyTabs.forEach(function (tab) {
+    tab.addEventListener("click", function () { showAnatomyStep(Number(tab.dataset.anatomyStep)); });
+  });
+  anatomyNext.addEventListener("click", function () { showScene("fertilization"); });
 
   document.addEventListener("visibilitychange", function () {
     if (document.hidden) clearTimers();

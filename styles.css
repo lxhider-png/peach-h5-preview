@@ -96,7 +96,10 @@ button {
 .back-button:focus-visible,
 .swipe-action:focus-visible,
 .bee:focus-visible,
-.germination-action:focus-visible {
+.germination-action:focus-visible,
+.observer-next:focus-visible,
+.observer-dots button:focus-visible,
+.anatomy-tabs button:focus-visible {
   outline: 2px solid var(--peach-deep);
   outline-offset: 3px;
 }
@@ -507,6 +510,204 @@ button {
   line-height: 1.45;
 }
 
+/* Pollen detail observer */
+.scene-pollen,
+.scene-anatomy {
+  background: var(--paper);
+}
+
+.pollen-observer,
+.anatomy-observer {
+  position: absolute;
+  top: 78px;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: hidden;
+  background: var(--paper-bright);
+}
+
+.pollen-slide {
+  position: absolute;
+  inset: 0 0 112px;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 360ms ease;
+}
+
+.pollen-slide.is-active {
+  visibility: visible;
+  opacity: 1;
+}
+
+.pollen-slide img {
+  width: 100%;
+  height: calc(100% - 108px);
+  display: block;
+  object-fit: contain;
+  background: var(--paper-bright);
+}
+
+.pollen-slide figcaption {
+  position: absolute;
+  right: 18px;
+  bottom: 0;
+  left: 18px;
+  min-height: 102px;
+  padding: 13px 0 0 14px;
+  border-top: 1px solid var(--ink);
+  background: rgba(251, 250, 247, 0.96);
+}
+
+.pollen-slide figcaption b,
+.pollen-slide figcaption span {
+  display: block;
+}
+
+.pollen-slide figcaption b {
+  color: var(--peach-deep);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.pollen-slide figcaption span {
+  margin-top: 5px;
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.observer-controls {
+  position: absolute;
+  right: 18px;
+  bottom: 15px;
+  left: 18px;
+  height: 82px;
+  display: grid;
+  gap: 11px;
+}
+
+.observer-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.observer-dots button {
+  width: 22px;
+  height: 3px;
+  border: 0;
+  border-radius: 0;
+  background: var(--line);
+  cursor: pointer;
+}
+
+.observer-dots button.is-current {
+  background: var(--peach-deep);
+}
+
+.observer-next {
+  width: 100%;
+  min-height: 48px;
+  padding: 0 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid var(--peach-deep);
+  border-radius: 4px;
+  background: var(--peach-deep);
+  color: var(--paper-bright);
+  font-size: 13px;
+  cursor: pointer;
+}
+
+/* Flower anatomy observer */
+.anatomy-viewport {
+  position: absolute;
+  inset: 0 0 142px;
+  overflow: hidden;
+}
+
+.anatomy-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0;
+  transform: scale(0.98);
+  transition: opacity 320ms ease, transform 420ms ease;
+}
+
+.anatomy-frame.is-active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.anatomy-callout {
+  position: absolute;
+  right: 16px;
+  bottom: 14px;
+  left: 16px;
+  min-height: 70px;
+  padding: 10px 12px;
+  border-left: 2px solid var(--leaf);
+  background: rgba(244, 242, 236, 0.94);
+}
+
+.anatomy-callout b,
+.anatomy-callout span {
+  display: block;
+}
+
+.anatomy-callout b {
+  font-size: 14px;
+}
+
+.anatomy-callout span {
+  margin-top: 3px;
+  color: var(--ink-soft);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.anatomy-tabs {
+  position: absolute;
+  right: 16px;
+  bottom: 94px;
+  left: 16px;
+  height: 36px;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  border: 1px solid var(--line);
+}
+
+.anatomy-tabs button {
+  border: 0;
+  border-right: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink-soft);
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.anatomy-tabs button:last-child {
+  border-right: 0;
+}
+
+.anatomy-tabs button.is-current {
+  background: var(--leaf);
+  color: var(--paper-bright);
+}
+
+.anatomy-next {
+  position: absolute;
+  right: 16px;
+  bottom: 24px;
+  left: 16px;
+  width: auto;
+}
+
 /* Pollen germination and fertilization */
 .scene-fertilization {
   background: var(--paper);
@@ -742,6 +943,8 @@ button {
   .assist-line,
   .bee img,
   .section-frame,
+  .pollen-slide,
+  .anatomy-frame,
   .scientific-label,
   .germination-action {
     transition-duration: 1ms;
@@ -766,6 +969,11 @@ button {
     top: 68px;
   }
 
+  .pollen-observer,
+  .anatomy-observer {
+    top: 68px;
+  }
+
   .product-record {
     padding-top: 12px;
   }
@@ -777,5 +985,35 @@ button {
   .swipe-action {
     min-height: 46px;
     bottom: 12px;
+  }
+
+  .pollen-slide {
+    bottom: 104px;
+  }
+
+  .pollen-slide img {
+    height: calc(100% - 92px);
+  }
+
+  .pollen-slide figcaption {
+    min-height: 88px;
+    padding-top: 9px;
+  }
+
+  .observer-controls {
+    bottom: 10px;
+    height: 76px;
+  }
+
+  .anatomy-viewport {
+    bottom: 132px;
+  }
+
+  .anatomy-tabs {
+    bottom: 86px;
+  }
+
+  .anatomy-next {
+    bottom: 18px;
   }
 }

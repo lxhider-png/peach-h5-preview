@@ -99,7 +99,7 @@
         </button>
 
         <div class="pollination-copy" aria-live="polite">
-          <img id="pollination-detail-image" src="assets/ch1-anther-detail.webp" alt="桃花花药局部观察图">
+          <img id="pollination-detail-image" src="assets/ch1-anther-scene.webp" alt="盛开桃花中的花药">
           <div>
             <p id="pollination-status">拖动蜜蜂，先经过花药。</p>
             <span id="pollination-detail">花药成熟后裂开，释放花粉。</span>
@@ -108,9 +108,82 @@
       </div>
     </section>
 
-    <section class="scene scene-fertilization" data-scene="fertilization" aria-label="第二章 花粉萌发与受精">
+    <section class="scene scene-pollen" data-scene="pollen" aria-label="第二章 花粉细节观察">
       <header class="scene-heading is-overlay">
         <button class="back-button" type="button" data-back="pollination" aria-label="返回授粉过程">←</button>
+        <div>
+          <p class="chapter-index">02 / 05 · 放大观察</p>
+          <h1>花粉从哪里来？</h1>
+        </div>
+      </header>
+
+      <div class="pollen-observer" id="pollen-observer" data-step="0">
+        <figure class="pollen-slide is-active" data-pollen-slide="0">
+          <img src="assets/ch1-anther-scene.webp" alt="盛开桃花中的花药与访花蜜蜂">
+          <figcaption><b>01 定位花药</b><span>桃花中央的雄蕊顶端带有花药。先在完整花朵中找到花粉的来源。</span></figcaption>
+        </figure>
+        <figure class="pollen-slide" data-pollen-slide="1">
+          <img src="assets/ch1-anther-callout.webp" alt="桃花花药位置与花粉放大观察">
+          <figcaption><b>02 花药与花粉</b><span>花粉形成于雄蕊顶端的花药中。引线把宏观花朵与微观花粉联系起来。</span></figcaption>
+        </figure>
+        <figure class="pollen-slide" data-pollen-slide="2">
+          <img src="assets/ch1-pollen-release.webp" alt="蜜蜂接触花药与花粉散落">
+          <figcaption><b>03 释放与携带</b><span>花药成熟后释放花粉；蜜蜂是桃花的主要传粉昆虫，花粉可附着在其体表绒毛和足部。</span></figcaption>
+        </figure>
+        <figure class="pollen-slide" data-pollen-slide="3">
+          <img src="assets/ch1-pollen-micro.webp" alt="桃花花粉粒表面形态放大图">
+          <figcaption><b>04 单粒花粉</b><span>桃花花粉粒具有纵向沟槽和细微表面纹理。这里是形态示意，不代表肉眼可见尺度。</span></figcaption>
+        </figure>
+        <figure class="pollen-slide" data-pollen-slide="4">
+          <img src="assets/ch1-stigma-section.webp" alt="桃花柱头、花柱、子房和胚珠纵剖结构">
+          <figcaption><b>05 抵达柱头</b><span>柱头位于雌蕊顶端，接收花粉；下方依次连接花柱、子房与胚珠。</span></figcaption>
+        </figure>
+
+        <div class="observer-controls">
+          <div class="observer-dots" aria-label="花粉观察进度">
+            <button class="is-current" type="button" data-pollen-dot="0" aria-label="查看花药"></button>
+            <button type="button" data-pollen-dot="1" aria-label="查看花药与花粉关系"></button>
+            <button type="button" data-pollen-dot="2" aria-label="查看花粉释放"></button>
+            <button type="button" data-pollen-dot="3" aria-label="查看单粒花粉"></button>
+            <button type="button" data-pollen-dot="4" aria-label="查看柱头"></button>
+          </div>
+          <button class="observer-next" id="pollen-next" type="button"><span id="pollen-next-label">继续：放大花药</span><span aria-hidden="true">→</span></button>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene scene-anatomy" data-scene="anatomy" aria-label="第二章 桃花内部结构">
+      <header class="scene-heading is-overlay">
+        <button class="back-button" type="button" data-back="pollen" aria-label="返回花粉观察">←</button>
+        <div>
+          <p class="chapter-index">02 / 05 · 花朵内部</p>
+          <h1>寻找受精发生的位置</h1>
+        </div>
+      </header>
+
+      <div class="anatomy-observer" id="anatomy-observer" data-step="0">
+        <div class="anatomy-viewport">
+          <img class="anatomy-frame is-active" data-anatomy-frame="0" src="assets/ch1-flower-section-01.webp" alt="桃花整体纵剖结构">
+          <img class="anatomy-frame" data-anatomy-frame="1" src="assets/ch1-flower-section-02.webp" alt="桃花花部结构">
+          <img class="anatomy-frame" data-anatomy-frame="2" src="assets/ch1-flower-section-05.webp" alt="桃花雌蕊与子房纵剖结构">
+          <img class="anatomy-frame" data-anatomy-frame="3" src="assets/ch1-flower-section-04.webp" alt="桃花子房与胚珠位置放大示意">
+          <img class="anatomy-frame" data-anatomy-frame="4" src="assets/ch1-flower-section-03.webp" alt="桃花胚珠内部结构放大示意">
+          <div class="anatomy-callout" id="anatomy-callout"><b>整花纵剖</b><span>雄蕊环绕雌蕊，中央雌蕊连接柱头、花柱和子房。</span></div>
+        </div>
+        <div class="anatomy-tabs" role="tablist" aria-label="选择观察层级">
+          <button class="is-current" type="button" data-anatomy-step="0">整花</button>
+          <button type="button" data-anatomy-step="1">花部</button>
+          <button type="button" data-anatomy-step="2">雌蕊</button>
+          <button type="button" data-anatomy-step="3">子房</button>
+          <button type="button" data-anatomy-step="4">胚珠</button>
+        </div>
+        <button class="observer-next anatomy-next" id="anatomy-next" type="button"><span>进入微观：观察花粉萌发</span><span aria-hidden="true">→</span></button>
+      </div>
+    </section>
+
+    <section class="scene scene-fertilization" data-scene="fertilization" aria-label="第二章 花粉萌发与受精">
+      <header class="scene-heading is-overlay">
+        <button class="back-button" type="button" data-back="anatomy" aria-label="返回花部结构观察">←</button>
         <div>
           <p class="chapter-index">02 / 05 · 花朵内部</p>
           <h1>花粉萌发与受精</h1>
@@ -118,7 +191,7 @@
       </header>
 
       <div class="fertilization-stage" id="fertilization-stage" data-step="0">
-        <img class="section-frame section-base" src="assets/ch1-section-01.webp" alt="桃花雌蕊纵剖面">
+        <img class="section-frame section-base" src="assets/ch1-flower-section-05.webp" alt="桃花雌蕊与子房纵剖结构">
         <img class="section-frame tube-frame tube-frame-1" src="assets/ch1-pollen-tube-01.webp" alt="花粉在柱头萌发">
         <img class="section-frame tube-frame tube-frame-2" src="assets/ch1-pollen-tube-02.webp" alt="花粉管沿花柱生长">
         <img class="section-frame tube-frame tube-frame-3" src="assets/ch1-pollen-tube-03.webp" alt="花粉管到达胚珠">
@@ -129,7 +202,7 @@
         <div class="scientific-label label-ovule">胚珠</div>
 
         <button class="germination-action" id="fertilization-button" type="button">
-          <img src="assets/ch1-pollen-grain.webp" alt="">
+          <img src="assets/ch1-pollen-micro.webp" alt="桃花花粉粒">
           <span id="fertilization-button-label">轻触花粉，观察萌发</span>
         </button>
 
@@ -152,8 +225,8 @@
       <div class="complete-copy">
         <p class="chapter-index">02 / 05 · 本章结论</p>
         <h2>受精完成，果实开始形成</h2>
-        <p>花粉抵达柱头是授粉；花粉管到达胚珠并释放精细胞，才完成受精。</p>
-        <p>受精后，胚珠发育为种子，子房逐渐发育为果实。</p>
+        <p>花粉抵达柱头是授粉；花粉管进入胚珠并释放两个精细胞，随后发生双受精。</p>
+        <p>一个精细胞与卵细胞结合形成受精卵，另一个参与形成胚乳；此后胚珠发育为种子，子房逐渐发育为果实。</p>
         <button class="primary-action" id="replay-button" type="button">
           <span aria-hidden="true">↻</span><span>重新观看</span>
         </button>

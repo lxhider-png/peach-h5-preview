@@ -3,59 +3,65 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#f4f2ec">
-  <meta name="description" content="认识一盒桃，并观察桃花授粉、花粉萌发与受精。">
-  <title>一枝鲜桃｜认识这盒桃</title>
+  <meta name="theme-color" content="#ffffff">
+  <meta name="description" content="通过包装 NFC 或二维码进入，优先查看鲜桃的食用与保存建议，并可继续查看本盒档案和品质形成科普。">
+  <title>一枝鲜桃｜食用保存、鲜桃档案与品质科普</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="minimal.css">
+  <link rel="stylesheet" href="v5.css?v=5.2">
 </head>
 <body>
   <main class="experience" id="experience">
     <div class="paper-texture" aria-hidden="true"></div>
+    <button class="global-menu" id="global-menu-button" type="button" aria-label="打开模块目录">≡</button>
 
     <section class="scene scene-start is-active" data-scene="start" aria-label="开始页面">
       <img class="start-art" src="assets/brand-cover.webp" alt="一枝鲜桃品牌桃果插画">
       <div class="start-copy">
         <button class="primary-action" id="start-button" type="button">
-          <span>开始认识这盒桃</span><span aria-hidden="true">→</span>
+          <span>查看食用与保存</span><span aria-hidden="true">→</span>
         </button>
       </div>
     </section>
 
-    <section class="scene scene-product" data-scene="product" aria-label="第一章 认识这盒桃">
+    <section class="scene scene-product" data-scene="product" aria-label="鲜桃档案">
       <header class="scene-heading">
-        <button class="back-button" type="button" data-back="start" aria-label="返回开始页面">←</button>
+        <button class="back-button" type="button" data-back="care-home" aria-label="返回食用与保存">←</button>
         <div>
-          <p class="chapter-index">01 / 05</p>
-          <h1>认识这盒桃</h1>
+          <p class="chapter-index">一盒档案</p>
+          <h1>鲜桃档案</h1>
         </div>
       </header>
 
       <figure class="product-figure">
         <img src="assets/product-visual.webp" alt="中油蟠7号黄油蟠桃产品主视觉">
-        <figcaption>一枝鲜桃 · 产品档案</figcaption>
+        <figcaption>一盒一码服务原型 · 以下为示范数据</figcaption>
       </figure>
 
       <div class="product-record" aria-label="产品信息">
         <p class="product-name">中油蟠7号黄油蟠桃</p>
         <dl>
           <div><dt>品种</dt><dd>中油蟠7号</dd></div>
-          <div><dt>类型</dt><dd>黄肉油蟠桃</dd></div>
-          <div><dt>品牌</dt><dd>一枝鲜桃</dd></div>
+          <div><dt>产地</dt><dd>北京市平谷区××果园</dd></div>
+          <div><dt>批次</dt><dd>PG-ZYP7-0828</dd></div>
+          <div><dt>采摘</dt><dd>2026年8月28日</dd></div>
+          <div><dt>装箱</dt><dd>2026年8月28日</dd></div>
+          <div><dt>状态</dt><dd>已签收（静态演示）</dd></div>
         </dl>
       </div>
 
       <button class="swipe-action" id="growth-button" type="button">
         <span class="swipe-arrow" aria-hidden="true">↑</span>
-        <span>上滑进入生长故事</span>
+        <span>继续了解为何好吃</span>
       </button>
     </section>
 
-    <section class="scene scene-bloom" data-scene="bloom" aria-label="第二章 花开与授粉">
+    <section class="scene scene-bloom" data-scene="bloom" aria-label="为何好吃 花开与授粉">
       <header class="scene-heading is-overlay">
-        <button class="back-button" type="button" data-back="product" aria-label="返回认识这盒桃">←</button>
+        <button class="back-button" type="button" data-back="product" aria-label="返回鲜桃档案">←</button>
         <div>
-          <p class="chapter-index">02 / 05</p>
-          <h1>花开与授粉</h1>
+          <p class="chapter-index">花开与授粉</p>
+          <h1>为何好吃</h1>
         </div>
       </header>
 
@@ -70,12 +76,12 @@
       </div>
     </section>
 
-    <section class="scene scene-pollination" data-scene="pollination" aria-label="第二章 蜜蜂授粉">
+    <section class="scene scene-pollination" data-scene="pollination" aria-label="为何好吃 蜜蜂授粉">
       <header class="scene-heading is-overlay">
-        <button class="back-button" type="button" data-back="product" aria-label="返回认识这盒桃">←</button>
+        <button class="back-button" type="button" data-back="bloom" aria-label="返回花开过程">←</button>
         <div>
-          <p class="chapter-index">02 / 05</p>
-          <h1>花开与授粉</h1>
+          <p class="chapter-index">花开与授粉</p>
+          <h1>为何好吃</h1>
         </div>
       </header>
 
@@ -83,7 +89,7 @@
         <img class="flower-scene" src="assets/flower-scene.webp" alt="桃花枝头授粉场景">
 
         <svg class="assist-line" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-          <path d="M25 79 C39 60 56 42 69 35 C60 47 47 56 34 61"></path>
+          <path d="M25 79 C45 62 61 43 72 34 C78 28 82 21 85 16"></path>
         </svg>
 
         <div class="target target-anther" id="target-anther" aria-label="花药目标">
@@ -92,6 +98,11 @@
         <div class="target target-stigma" id="target-stigma" aria-label="柱头目标">
           <span></span><b>柱头</b>
         </div>
+
+        <figure class="stigma-inset" aria-label="桃花中央的柱头与花柱">
+          <img src="assets/ch1-stigma-detail.webp" alt="桃花纵剖中的柱头、花柱与子房">
+          <figcaption>柱头 / 花柱</figcaption>
+        </figure>
 
         <button class="bee" id="bee" type="button" aria-label="拖动蜜蜂，先到花药，再到柱头">
           <img src="assets/bee.webp" alt="" draggable="false">
@@ -108,11 +119,11 @@
       </div>
     </section>
 
-    <section class="scene scene-pollen" data-scene="pollen" aria-label="第二章 花粉细节观察">
+    <section class="scene scene-pollen" data-scene="pollen" aria-label="为何好吃 花粉细节观察">
       <header class="scene-heading is-overlay">
         <button class="back-button" type="button" data-back="pollination" aria-label="返回授粉过程">←</button>
         <div>
-          <p class="chapter-index">02 / 05 · 放大观察</p>
+          <p class="chapter-index">花粉与柱头</p>
           <h1>花粉从哪里来？</h1>
         </div>
       </header>
@@ -152,11 +163,11 @@
       </div>
     </section>
 
-    <section class="scene scene-anatomy" data-scene="anatomy" aria-label="第二章 桃花内部结构">
+    <section class="scene scene-anatomy" data-scene="anatomy" aria-label="为何好吃 桃花内部结构">
       <header class="scene-heading is-overlay">
         <button class="back-button" type="button" data-back="pollen" aria-label="返回花粉观察">←</button>
         <div>
-          <p class="chapter-index">02 / 05 · 花朵内部</p>
+          <p class="chapter-index">花的内部结构</p>
           <h1>寻找受精发生的位置</h1>
         </div>
       </header>
@@ -181,11 +192,11 @@
       </div>
     </section>
 
-    <section class="scene scene-fertilization" data-scene="fertilization" aria-label="第二章 花粉萌发与受精">
+    <section class="scene scene-fertilization" data-scene="fertilization" aria-label="为何好吃 花粉萌发与受精">
       <header class="scene-heading is-overlay">
         <button class="back-button" type="button" data-back="anatomy" aria-label="返回花部结构观察">←</button>
         <div>
-          <p class="chapter-index">02 / 05 · 花朵内部</p>
+          <p class="chapter-index">花粉管与受精</p>
           <h1>花粉萌发与受精</h1>
         </div>
       </header>
@@ -195,11 +206,13 @@
         <img class="section-frame tube-frame tube-frame-1" src="assets/ch1-pollen-tube-01.webp" alt="花粉在柱头萌发">
         <img class="section-frame tube-frame tube-frame-2" src="assets/ch1-pollen-tube-02.webp" alt="花粉管沿花柱生长">
         <img class="section-frame tube-frame tube-frame-3" src="assets/ch1-pollen-tube-03.webp" alt="花粉管到达胚珠">
+        <img class="section-frame tube-frame tube-frame-4" src="assets/ch1-flower-section-03.webp" alt="胚珠内部的受精位置">
 
         <div class="scientific-label label-stigma">柱头</div>
         <div class="scientific-label label-style">花柱</div>
         <div class="scientific-label label-ovary">子房</div>
         <div class="scientific-label label-ovule">胚珠</div>
+        <div class="scientific-label label-zygote">受精卵</div>
 
         <button class="germination-action" id="fertilization-button" type="button">
           <img src="assets/ch1-pollen-micro.webp" alt="桃花花粉粒">
@@ -211,6 +224,7 @@
           <li data-process-step="2"><i></i><span>花柱</span></li>
           <li data-process-step="3"><i></i><span>子房</span></li>
           <li data-process-step="4"><i></i><span>胚珠</span></li>
+          <li data-process-step="5"><i></i><span>受精卵</span></li>
         </ol>
       </div>
 
@@ -220,18 +234,370 @@
       </div>
     </section>
 
-    <section class="scene scene-complete" data-scene="complete" aria-label="授粉完成">
-      <img class="complete-art" src="assets/ch1-pollen-tube-03.webp" alt="花粉管到达胚珠的科学插画">
+    <section class="scene scene-complete" data-scene="pollination-complete" aria-label="为何好吃 从花到果">
+      <img class="complete-art" src="assets/ch3-growth-scene.webp" alt="从桃花、幼果到成熟桃的连续物候图">
       <div class="complete-copy">
-        <p class="chapter-index">02 / 05 · 本章结论</p>
-        <h2>受精完成，果实开始形成</h2>
-        <p>花粉抵达柱头是授粉；花粉管进入胚珠并释放两个精细胞，随后发生双受精。</p>
-        <p>一个精细胞与卵细胞结合形成受精卵，另一个参与形成胚乳；此后胚珠发育为种子，子房逐渐发育为果实。</p>
-        <button class="primary-action" id="replay-button" type="button">
-          <span aria-hidden="true">↻</span><span>重新观看</span>
+        <p class="chapter-index">从花到果</p>
+        <h2>从花到这一盒桃</h2>
+        <p>花粉抵达柱头是授粉。随后花粉萌发，花粉管沿花柱进入子房并到达胚珠。</p>
+        <p>受精后，胚珠发育为种子，子房膨大成为幼果，再经历硬核、膨大与成熟。</p>
+        <button class="primary-action" id="to-growth-button" type="button">
+          <span>继续查看从花到果</span><span aria-hidden="true">→</span>
         </button>
       </div>
     </section>
+    <section class="scene scene-growth" data-scene="growth" aria-label="为何好吃 从花到果">
+      <header class="scene-heading is-overlay">
+        <button class="back-button" type="button" data-back="pollination-complete" aria-label="返回授粉说明">←</button>
+        <div><p class="chapter-index">坐果与生长</p><h1>从花到果</h1></div>
+      </header>
+      <div class="growth-stage" id="growth-stage" data-step="0">
+        <div class="growth-images" aria-live="polite">
+          <img class="growth-continuity" src="assets/ch3-growth-scene.webp" alt="桃花、幼果、果核和成熟桃在同一枝条上的连续生长图">
+          <img class="growth-frame is-active" data-growth-frame="0" src="assets/ch3-fruit-set.webp" alt="桃树坐果阶段">
+          <img class="growth-frame" data-growth-frame="1" src="assets/ch3-young-fruit.webp" alt="桃树幼果生长阶段">
+          <img class="growth-frame" data-growth-frame="2" src="assets/ch3-pit-hardening.webp" alt="桃果果核硬化阶段剖面">
+          <img class="growth-frame" data-growth-frame="3" src="assets/ch3-fruit-expansion.webp" alt="桃果膨大阶段">
+          <img class="growth-frame" data-growth-frame="4" src="assets/ch3-near-ripe-fruit.webp" alt="桃果接近成熟阶段">
+          <span class="specimen-mark">中油蟠7号 · 生长阶段观察</span>
+        </div>
+        <div class="growth-copy">
+          <p class="section-question">受精之后，幼果经历哪些关键变化？</p>
+          <div class="stage-copy" aria-live="polite"><b id="growth-stage-name">坐果</b><span id="growth-stage-detail">受精后，胚珠开始发育为种子，子房逐渐形成幼果。</span></div>
+          <div class="timeline-control">
+            <input id="growth-range" type="range" min="0" max="100" value="0" step="1" aria-label="坐果与生长时间轴">
+            <div class="timeline-labels" aria-label="选择生长阶段"><button type="button" data-growth-value="0">坐果</button><button type="button" data-growth-value="18">幼果</button><button type="button" data-growth-value="38">硬核</button><button type="button" data-growth-value="62">膨大</button><button type="button" data-growth-value="100">近熟</button></div>
+          </div>
+          <p class="interaction-note" id="growth-hint">轻触阶段名称，或滑动查看从坐果到近熟。</p>
+          <button class="primary-action next-chapter-action" id="to-flavor-button" type="button"><span>继续：观察昼夜变化</span><span aria-hidden="true">→</span></button>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene scene-flavor-foundation" data-scene="flavor-foundation" aria-label="为何好吃 品质形成总结">
+      <header class="scene-heading is-overlay">
+        <button class="back-button" type="button" data-back="daynight" aria-label="返回昼夜变化">←</button>
+        <div><p class="chapter-index">风味形成</p><h1>品质形成总结</h1></div>
+      </header>
+      <div class="foundation-observer" id="foundation-observer" data-step="0">
+        <div class="foundation-viewport">
+          <img class="foundation-frame is-active" data-foundation-frame="0" src="assets/ch4-growing-fruit.webp" alt="桃树枝叶与生长中的果实">
+          <img class="foundation-frame" data-foundation-frame="1" src="assets/ch4-ripe-fruit.webp" alt="接近成熟的桃果">
+          <img class="foundation-frame" data-foundation-frame="2" src="assets/ch4-material-flow.webp" alt="从根系、枝叶到果实的完整物质联系">
+        </div>
+        <div class="foundation-copy">
+          <p class="section-question">风味不由某一个条件单独决定。</p>
+          <div class="stage-copy"><b id="foundation-name">品种基础</b><span id="foundation-detail">品种决定果形、成熟期和风味表现的遗传基础。</span></div>
+          <div class="foundation-tabs" role="tablist" aria-label="查看品质形成的三类条件">
+            <button class="is-current" type="button" data-foundation-step="0">品种</button>
+            <button type="button" data-foundation-step="1">成熟</button>
+            <button type="button" data-foundation-step="2">环境</button>
+          </div>
+          <button class="observer-next" id="foundation-next" type="button"><span id="foundation-next-label">继续：成熟过程</span><span aria-hidden="true">→</span></button>
+        </div>
+      </div>
+    </section>
+    <section class="scene scene-daynight" data-scene="daynight" aria-label="为何好吃 昼夜与物质积累">
+      <header class="scene-heading is-overlay">
+        <button class="back-button" type="button" data-back="growth" aria-label="返回从花到果">←</button>
+        <div><p class="chapter-index">昼夜变化</p><h1>昼夜与物质积累</h1></div>
+      </header>
+      <div class="daynight-stage" id="daynight-stage" data-phase="day">
+        <div class="daynight-images">
+          <img class="day-scene" src="assets/ch4-day-scene.webp" alt="白天光照下的桃树枝叶与果实">
+          <img class="night-scene" src="assets/ch4-night-scene.webp" alt="夜晚的桃树枝叶与果实">
+          <img class="ripe-scene" src="assets/ch4-ripe-fruit.webp" alt="多个昼夜后接近成熟的桃果">
+          <svg class="day-flow" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="M72 23 C66 36 58 48 54 60 C51 69 48 75 44 81"></path></svg>
+          <div class="process-key"><span class="photosynthesis-key">光合作用</span><span class="respiration-key">呼吸</span></div>
+        </div>
+        <div class="daynight-copy">
+          <div class="stage-copy"><b id="daynight-name">白天</b><span id="daynight-detail">叶片进行光合作用，合成有机物；白天，呼吸也在进行。</span></div>
+          <div class="timeline-control daynight-control">
+            <input id="daynight-range" type="range" min="0" max="100" value="0" step="1" aria-label="白天与夜晚时间轴">
+            <div class="daynight-labels" aria-label="选择昼夜阶段"><button type="button" data-daynight-value="0">白天</button><button type="button" data-daynight-value="48">黄昏</button><button type="button" data-daynight-value="72">夜晚</button><button type="button" data-daynight-value="100">净积累</button></div>
+          </div>
+          <p class="interaction-note" id="daynight-hint">按住昼夜滑杆，观察白天与夜晚。</p>
+          <button class="primary-action next-chapter-action" id="to-ripeness-button" type="button" hidden><span>继续：品质形成总结</span><span aria-hidden="true">→</span></button>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene scene-care-home" data-scene="care-home" aria-label="食用与保存">
+      <header class="scene-heading care-heading">
+        <div>
+          <p class="chapter-index">食用与保存</p>
+          <h1>这只桃，现在怎么吃？</h1>
+        </div>
+      </header>
+      <figure class="care-hero">
+        <img src="assets/ch5-turning-ripe.webp" alt="一只正在转熟的中油蟠7号黄油蟠桃">
+        <figcaption>先看果面，再结合果肩手感与气味判断</figcaption>
+      </figure>
+      <div class="care-intro">
+        <p>拍摄桃子正面，获得成熟状态与保存方式的参考建议。</p>
+        <dl class="care-context" aria-label="本盒桃辅助判断信息">
+          <div><dt>品种</dt><dd>中油蟠7号</dd></div>
+          <div><dt>采摘</dt><dd>2026.08.28</dd></div>
+        </dl>
+        <button class="primary-action care-start" id="care-start-button" type="button">
+          <span>拍照判断食用状态</span><span aria-hidden="true">→</span>
+        </button>
+        <p class="care-disclaimer">照片判断仅作参考，不能替代手感、气味与食用安全检查。</p>
+      </div>
+    </section>
+
+    <section class="scene scene-camera-guide" data-scene="camera-guide" aria-label="拍摄引导">
+      <header class="scene-heading">
+        <button class="back-button" type="button" data-back="care-home" aria-label="返回食用与保存">←</button>
+        <div><p class="chapter-index">拍摄引导</p><h1>让桃子清楚入镜</h1></div>
+      </header>
+      <figure class="camera-guide-visual">
+        <img src="assets/ch5-ready.webp" alt="桃子拍摄取景示范">
+        <span class="guide-frame" aria-hidden="true"></span>
+      </figure>
+      <ol class="guide-list">
+        <li><b>自然光</b><span>避免强反光和有色灯光</span></li>
+        <li><b>单只桃</b><span>完整拍到果面与果肩</span></li>
+        <li><b>干净背景</b><span>镜头与桃子保持稳定</span></li>
+      </ol>
+      <div class="guide-actions">
+        <button class="primary-action" id="open-camera-button" type="button">打开相机</button>
+        <button class="secondary-action" id="choose-photo-button" type="button">从相册选择</button>
+        <button class="text-action" id="use-demo-button" type="button">使用示范照片体验</button>
+        <input id="photo-input" type="file" accept="image/*" capture="environment" hidden>
+      </div>
+    </section>
+
+    <section class="scene scene-camera" data-scene="camera" aria-label="相机取景">
+      <header class="camera-topbar">
+        <button class="camera-close" id="close-camera-button" type="button" aria-label="关闭相机">×</button>
+        <p>将桃子放入取景框</p>
+      </header>
+      <div class="camera-viewport">
+        <video id="camera-video" playsinline muted aria-label="实时相机画面"></video>
+        <span class="camera-frame" aria-hidden="true"></span>
+        <p id="camera-status" role="status">正在请求相机权限…</p>
+      </div>
+      <div class="camera-controls">
+        <button class="camera-gallery" id="camera-gallery-button" type="button">相册</button>
+        <button class="camera-shutter" id="camera-shutter-button" type="button" aria-label="拍摄照片"><span></span></button>
+        <button class="camera-demo" id="camera-demo-button" type="button">示范</button>
+      </div>
+      <canvas id="camera-canvas" hidden></canvas>
+    </section>
+
+    <section class="scene scene-preview" data-scene="preview" aria-label="照片预览">
+      <header class="scene-heading">
+        <button class="back-button" type="button" data-back="camera-guide" aria-label="返回拍摄引导">←</button>
+        <div><p class="chapter-index">照片预览</p><h1>确认桃子完整清晰</h1></div>
+      </header>
+      <figure class="photo-preview">
+        <img id="preview-image" src="assets/ch5-turning-ripe.webp" alt="待识别的桃子照片">
+      </figure>
+      <div class="preview-checks" aria-label="照片检查项">
+        <span>果面完整</span><span>光线均匀</span><span>画面清晰</span>
+      </div>
+      <div class="preview-actions">
+        <button class="secondary-action" id="retake-button" type="button">重新拍摄</button>
+        <button class="primary-action" id="analyze-button" type="button">开始判断</button>
+      </div>
+    </section>
+
+    <section class="scene scene-analyzing" data-scene="analyzing" aria-label="正在分析">
+      <div class="analysis-visual">
+        <img id="analysis-image" src="assets/ch5-turning-ripe.webp" alt="正在分析的桃子照片">
+        <span class="analysis-line" aria-hidden="true"></span>
+      </div>
+      <div class="analysis-copy" role="status" aria-live="polite">
+        <p class="chapter-index">参考判断</p>
+        <h1>正在分析果面状态</h1>
+        <p>结合照片、品种与采后时间生成建议</p>
+        <div class="analysis-facts"><span>中油蟠7号</span><span>采后第 6 天</span></div>
+      </div>
+    </section>
+
+    <section class="scene scene-ai-result" data-scene="ai-result" aria-label="成熟状态识别结果">
+      <header class="scene-heading">
+        <button class="back-button" type="button" data-back="preview" aria-label="返回照片预览">←</button>
+        <div><p class="chapter-index">参考判断</p><h1>成熟状态</h1></div>
+      </header>
+      <figure class="result-visual">
+        <img id="result-image" src="assets/ch5-turning-ripe.webp" alt="用于判断成熟状态的桃子照片">
+        <figcaption id="result-badge">正在转熟</figcaption>
+      </figure>
+      <div class="result-copy">
+        <h2 id="result-title">正在转熟</h2>
+        <p id="result-summary">果面状态接近转熟阶段，建议结合果肩手感与香气再次确认。</p>
+        <div class="result-basis"><span>图像特征</span><span>品种</span><span>采后时间</span></div>
+        <p class="care-disclaimer" id="result-disclaimer">照片无法判断实际硬度、内部损伤、甜度或气味。</p>
+        <div class="result-actions" id="normal-result-actions">
+          <button class="primary-action" id="confirm-result-button" type="button">与实际感受相符</button>
+          <button class="secondary-action" id="adjust-result-button" type="button">手动调整状态</button>
+          <button class="text-action" id="result-retake-button" type="button">重新拍摄</button>
+        </div>
+        <div class="result-actions" id="special-result-actions" hidden>
+          <button class="primary-action" id="special-result-button" type="button">查看处理建议</button>
+          <button class="secondary-action" id="special-retake-button" type="button">重新拍摄</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene scene-advice" data-scene="advice" aria-label="保存与食用建议">
+      <header class="scene-heading">
+        <button class="back-button" type="button" data-back="ai-result" aria-label="返回判断结果">←</button>
+        <div><p class="chapter-index">食用与保存</p><h1>现在这样处理</h1></div>
+      </header>
+      <figure class="advice-visual">
+        <img id="advice-image" src="assets/ch5-storage-room.webp" alt="桃子保存方式示意">
+      </figure>
+      <div class="advice-copy">
+        <div class="advice-state"><span>已确认状态</span><b id="advice-state-name">正在转熟</b></div>
+        <section><h2 id="advice-title">阴凉通风，近期食用</h2><p id="advice-detail">单层摆放，避免挤压和阳光直射。每天轻按果肩并闻气味，达到喜欢的软硬度后食用。</p></section>
+        <ul class="advice-checks"><li>食用前用流动清水清洗</li><li>出现霉变、异味或异常渗液时不要食用</li></ul>
+        <button class="secondary-action" id="advice-profile-button" type="button">查看这盒桃的档案</button>
+      </div>
+    </section>
+
+    <section class="scene scene-issue" data-scene="issue" aria-label="异常与售后">
+      <header class="scene-heading">
+        <button class="back-button" type="button" data-back="ai-result" aria-label="返回判断结果">←</button>
+        <div><p class="chapter-index">异常与售后</p><h1>先暂停食用</h1></div>
+      </header>
+      <figure class="issue-visual"><img src="assets/ch5-abnormal-reference.webp" alt="桃果异常状态参考图"></figure>
+      <div class="issue-copy">
+        <p>如果出现明显霉变、异常异味或异常渗液，请勿食用。仅凭照片不能判断内部是否损伤。</p>
+        <dl><div><dt>本盒批次</dt><dd>PG-ZYP7-0828</dd></div><div><dt>服务状态</dt><dd>演示原型</dd></div></dl>
+        <button class="primary-action" id="after-sales-button" type="button">查看售后说明</button>
+        <button class="secondary-action" id="issue-retake-button" type="button">重新拍摄</button>
+      </div>
+    </section>
+
+    <section class="scene scene-ripeness" data-scene="ripeness" aria-label="食用与保存 成熟状态">
+      <header class="scene-heading is-overlay">
+        <button class="back-button" type="button" data-back="start" aria-label="返回开始页面">←</button>
+        <div><p class="chapter-index">食用提示</p><h1>食用与保存</h1></div>
+      </header>
+      <div class="ripeness-observer" id="ripeness-observer" data-state="firm">
+        <div class="ripeness-viewport">
+          <img class="ripeness-frame is-active" data-ripeness-frame="firm" src="assets/ch5-firm.webp" alt="偏硬状态的黄油蟠桃">
+          <img class="ripeness-frame" data-ripeness-frame="turning" src="assets/ch5-turning-ripe.webp" alt="正在转熟的黄油蟠桃">
+          <img class="ripeness-frame" data-ripeness-frame="ready" src="assets/ch5-ready.webp" alt="适合食用状态的黄油蟠桃">
+          <img class="ripeness-frame" data-ripeness-frame="soft" src="assets/ch5-soft.webp" alt="偏软状态的黄油蟠桃">
+          <span class="specimen-mark">先看果面 · 再轻按果肩 · 最后闻气味</span>
+        </div>
+        <div class="ripeness-copy">
+          <p class="section-question">这只桃现在适合怎样保存和食用？</p>
+          <div class="ripeness-tabs" role="tablist" aria-label="选择桃的成熟状态">
+            <button class="is-current" type="button" data-ripeness-state="firm">偏硬</button>
+            <button type="button" data-ripeness-state="turning">转熟</button>
+            <button type="button" data-ripeness-state="ready">适食</button>
+            <button type="button" data-ripeness-state="soft">偏软</button>
+          </div>
+          <div class="stage-copy"><b id="ripeness-name">偏硬</b><span id="ripeness-detail">果肩仍硬、香气较弱。放在阴凉通风处，继续观察。</span></div>
+          <div class="ripeness-actions">
+            <button class="secondary-action" id="storage-button" type="button">查看储存提示</button>
+            <button class="secondary-action" id="abnormal-button" type="button">发现异常？</button>
+          </div>
+          <button class="primary-action next-chapter-action" id="to-feedback-button" type="button"><span>继续：反馈与服务</span><span aria-hidden="true">→</span></button>
+        </div>
+      </div>
+    </section>
+    <section class="scene scene-feedback" data-scene="feedback" aria-label="食用与保存 反馈与服务">
+      <img class="feedback-art" src="assets/ch5-package-product.webp" alt="一枝鲜桃包装与黄油蟠桃">
+      <header class="scene-heading is-overlay">
+        <button class="back-button" type="button" data-back="ripeness" aria-label="返回成熟度观察">←</button>
+        <div><p class="chapter-index">反馈与服务</p><h1>反馈与服务</h1></div>
+      </header>
+      <form class="feedback-sheet" id="feedback-form">
+        <fieldset>
+          <legend>成熟度</legend>
+          <div class="feedback-options feedback-maturity">
+            <label><input type="radio" name="maturity" value="偏硬"><span>偏硬</span></label>
+            <label><input type="radio" name="maturity" value="刚好"><span>刚好</span></label>
+            <label><input type="radio" name="maturity" value="偏软"><span>偏软</span></label>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>体验</legend>
+          <div class="feedback-options feedback-tags">
+            <label><input type="checkbox" name="experience" value="甜味"><span>甜味</span></label>
+            <label><input type="checkbox" name="experience" value="酸甜平衡"><span>酸甜平衡</span></label>
+            <label><input type="checkbox" name="experience" value="香气"><span>香气</span></label>
+            <label><input type="checkbox" name="experience" value="汁水"><span>汁水</span></label>
+            <label><input type="checkbox" name="experience" value="质地"><span>质地</span></label>
+          </div>
+        </fieldset>
+        <p class="feedback-privacy">只在当前浏览会话中记录选择，不提交姓名、电话、地址或精确位置。</p>
+        <button class="primary-action feedback-submit" id="feedback-submit-button" type="submit">记录本次感受</button>
+        <p class="feedback-status" id="feedback-status" role="status" aria-live="polite"></p>
+        <div class="service-links">
+          <button type="button" data-service-route="after-sales">售后说明</button>
+          <button type="button" data-service-route="repurchase">再次购买</button>
+          <button type="button" data-service-route="privacy">隐私说明</button>
+        </div>
+        <button class="text-action" id="finish-button" type="button">查看结语 →</button>
+      </form>
+    </section>
+
+    <section class="scene scene-ending" data-scene="ending" aria-label="体验结语">
+      <img class="ending-art" src="assets/ch5-package-product.webp" alt="一枝鲜桃包装与黄油蟠桃">
+      <div class="ending-copy">
+        <p class="chapter-index">一枝鲜桃 · ONE BRANCH · ONE PEACH</p>
+        <h2>从一朵花，到这一盒桃。</h2>
+        <p>谢谢你完成这次观察。</p>
+        <div class="ending-actions">
+          <button class="primary-action" id="replay-button" type="button"><span aria-hidden="true">←</span><span>返回食用与保存</span></button>
+          <button class="secondary-action" id="ending-menu-button" type="button">选择模块</button>
+        </div>
+      </div>
+    </section>
+
+    <nav class="primary-navigation" id="primary-navigation" aria-label="一级导航">
+      <button type="button" data-primary-jump="care-home" data-module="care">
+        <span>食用与保存</span>
+      </button>
+      <button type="button" data-primary-jump="product" data-module="profile">
+        <span>鲜桃档案</span>
+      </button>
+      <button type="button" data-primary-jump="bloom" data-module="science">
+        <span>为何好吃</span>
+      </button>
+    </nav>
+
+    <div class="overlay" id="chapter-menu" hidden>
+      <button class="overlay-backdrop" type="button" data-menu-close aria-label="关闭模块目录"></button>
+      <section class="overlay-sheet chapter-sheet" role="dialog" aria-modal="true" aria-labelledby="chapter-menu-title">
+        <div class="overlay-heading"><div><p class="chapter-index">一枝鲜桃</p><h2 id="chapter-menu-title">选择模块</h2></div><button type="button" data-menu-close aria-label="关闭模块目录">×</button></div>
+        <nav class="chapter-list" aria-label="三个一级模块">
+          <button type="button" data-jump="care-home"><b>食用与保存</b></button>
+          <button type="button" data-jump="product"><b>鲜桃档案</b></button>
+          <button type="button" data-jump="bloom"><b>为何好吃</b></button>
+        </nav>
+      </section>
+    </div>
+
+    <div class="overlay" id="info-overlay" hidden>
+      <button class="overlay-backdrop" type="button" data-info-close aria-label="关闭说明"></button>
+      <section class="overlay-sheet info-sheet" role="dialog" aria-modal="true" aria-labelledby="info-title">
+        <div class="overlay-heading"><div><p class="chapter-index" id="info-eyebrow">食用提示</p><h2 id="info-title">储存与食用</h2></div><button type="button" data-info-close aria-label="关闭说明">×</button></div>
+        <img id="info-image" src="assets/ch5-storage-room.webp" alt="阴凉通风处储存桃果">
+        <div class="info-copy" id="info-copy"></div>
+        <button class="primary-action info-close-action" type="button" data-info-close>知道了</button>
+      </section>
+    </div>
+
+    <div class="overlay" id="manual-overlay" hidden>
+      <button class="overlay-backdrop" type="button" data-manual-close aria-label="关闭状态选择"></button>
+      <section class="overlay-sheet manual-sheet" role="dialog" aria-modal="true" aria-labelledby="manual-title">
+        <div class="overlay-heading"><div><p class="chapter-index">手动确认</p><h2 id="manual-title">桃子摸起来怎么样？</h2></div><button type="button" data-manual-close aria-label="关闭状态选择">×</button></div>
+        <div class="manual-options">
+          <button type="button" data-manual-state="firm"><b>偏硬</b><span>果肩较硬，香气较弱</span></button>
+          <button type="button" data-manual-state="turning"><b>正在转熟</b><span>略有弹性，开始出现香气</span></button>
+          <button type="button" data-manual-state="ready"><b>适合食用</b><span>适度弹性，具有正常香气</span></button>
+          <button type="button" data-manual-state="soft"><b>偏软</b><span>果肩明显变软，需要尽快食用</span></button>
+        </div>
+      </section>
+    </div>
   </main>
 
   <script src="app.js"></script>

@@ -29,6 +29,84 @@
   var fertilizationButtonLabel = document.getElementById("fertilization-button-label");
   var fertilizationStatus = document.getElementById("fertilization-status");
   var fertilizationDetail = document.getElementById("fertilization-detail");
+  var globalMenuButton = document.getElementById("global-menu-button");
+  var chapterMenu = document.getElementById("chapter-menu");
+  var endingMenuButton = document.getElementById("ending-menu-button");
+  var primaryNavigation = document.getElementById("primary-navigation");
+  var primaryNavigationButtons = Array.prototype.slice.call(document.querySelectorAll("[data-primary-jump]"));
+  var toGrowthButton = document.getElementById("to-growth-button");
+  var growthStage = document.getElementById("growth-stage");
+  var growthFrames = Array.prototype.slice.call(document.querySelectorAll("[data-growth-frame]"));
+  var growthRange = document.getElementById("growth-range");
+  var growthStageName = document.getElementById("growth-stage-name");
+  var growthStageDetail = document.getElementById("growth-stage-detail");
+  var growthHint = document.getElementById("growth-hint");
+  var toFlavorButton = document.getElementById("to-flavor-button");
+  var foundationObserver = document.getElementById("foundation-observer");
+  var foundationFrames = Array.prototype.slice.call(document.querySelectorAll("[data-foundation-frame]"));
+  var foundationTabs = Array.prototype.slice.call(document.querySelectorAll("[data-foundation-step]"));
+  var foundationName = document.getElementById("foundation-name");
+  var foundationDetail = document.getElementById("foundation-detail");
+  var foundationNext = document.getElementById("foundation-next");
+  var foundationNextLabel = document.getElementById("foundation-next-label");
+  var daynightStage = document.getElementById("daynight-stage");
+  var daynightRange = document.getElementById("daynight-range");
+  var daynightName = document.getElementById("daynight-name");
+  var daynightDetail = document.getElementById("daynight-detail");
+  var daynightHint = document.getElementById("daynight-hint");
+  var toRipenessButton = document.getElementById("to-ripeness-button");
+  var ripenessObserver = document.getElementById("ripeness-observer");
+  var ripenessFrames = Array.prototype.slice.call(document.querySelectorAll("[data-ripeness-frame]"));
+  var ripenessTabs = Array.prototype.slice.call(document.querySelectorAll("[data-ripeness-state]"));
+  var ripenessName = document.getElementById("ripeness-name");
+  var ripenessDetail = document.getElementById("ripeness-detail");
+  var storageButton = document.getElementById("storage-button");
+  var abnormalButton = document.getElementById("abnormal-button");
+  var toFeedbackButton = document.getElementById("to-feedback-button");
+  var feedbackForm = document.getElementById("feedback-form");
+  var feedbackStatus = document.getElementById("feedback-status");
+  var finishButton = document.getElementById("finish-button");
+  var infoOverlay = document.getElementById("info-overlay");
+  var infoEyebrow = document.getElementById("info-eyebrow");
+  var infoTitle = document.getElementById("info-title");
+  var infoImage = document.getElementById("info-image");
+  var infoCopy = document.getElementById("info-copy");
+  var careStartButton = document.getElementById("care-start-button");
+  var openCameraButton = document.getElementById("open-camera-button");
+  var choosePhotoButton = document.getElementById("choose-photo-button");
+  var useDemoButton = document.getElementById("use-demo-button");
+  var photoInput = document.getElementById("photo-input");
+  var cameraVideo = document.getElementById("camera-video");
+  var cameraCanvas = document.getElementById("camera-canvas");
+  var cameraStatus = document.getElementById("camera-status");
+  var closeCameraButton = document.getElementById("close-camera-button");
+  var cameraGalleryButton = document.getElementById("camera-gallery-button");
+  var cameraShutterButton = document.getElementById("camera-shutter-button");
+  var cameraDemoButton = document.getElementById("camera-demo-button");
+  var previewImage = document.getElementById("preview-image");
+  var analysisImage = document.getElementById("analysis-image");
+  var resultImage = document.getElementById("result-image");
+  var retakeButton = document.getElementById("retake-button");
+  var analyzeButton = document.getElementById("analyze-button");
+  var resultBadge = document.getElementById("result-badge");
+  var resultTitle = document.getElementById("result-title");
+  var resultSummary = document.getElementById("result-summary");
+  var resultDisclaimer = document.getElementById("result-disclaimer");
+  var normalResultActions = document.getElementById("normal-result-actions");
+  var specialResultActions = document.getElementById("special-result-actions");
+  var confirmResultButton = document.getElementById("confirm-result-button");
+  var adjustResultButton = document.getElementById("adjust-result-button");
+  var resultRetakeButton = document.getElementById("result-retake-button");
+  var specialResultButton = document.getElementById("special-result-button");
+  var specialRetakeButton = document.getElementById("special-retake-button");
+  var adviceImage = document.getElementById("advice-image");
+  var adviceStateName = document.getElementById("advice-state-name");
+  var adviceTitle = document.getElementById("advice-title");
+  var adviceDetail = document.getElementById("advice-detail");
+  var adviceProfileButton = document.getElementById("advice-profile-button");
+  var afterSalesButton = document.getElementById("after-sales-button");
+  var issueRetakeButton = document.getElementById("issue-retake-button");
+  var manualOverlay = document.getElementById("manual-overlay");
   var reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   var state = {
@@ -48,7 +126,86 @@
     },
     pollenStep: 0,
     anatomyStep: 0,
-    fertilizationStep: 0
+    fertilizationStep: 0,
+    growthStep: 0,
+    growthReleaseCount: 0,
+    foundationStep: 0,
+    daynightReleaseCount: 0,
+    ripenessState: "firm",
+    aiResult: "turning",
+    capturedImage: "assets/ch5-turning-ripe.webp",
+    capturedObjectUrl: "",
+    cameraStream: null,
+    routeOverlay: false,
+    overlayReturnFocus: null
+  };
+
+  var sceneModules = {
+    start: "system",
+    "care-home": "care",
+    "camera-guide": "care",
+    camera: "care",
+    preview: "care",
+    analyzing: "care",
+    "ai-result": "care",
+    advice: "care",
+    issue: "care",
+    ripeness: "care",
+    feedback: "care",
+    ending: "care",
+    product: "profile",
+    bloom: "science",
+    pollination: "science",
+    pollen: "science",
+    anatomy: "science",
+    fertilization: "science",
+    "pollination-complete": "science",
+    growth: "science",
+    daynight: "science",
+    "flavor-foundation": "science"
+  };
+
+  var sceneRoutes = {
+    start: "#/start",
+    "care-home": "#/care",
+    "camera-guide": "#/care/camera-guide",
+    camera: "#/care/camera",
+    preview: "#/care/preview",
+    analyzing: "#/care/analyzing",
+    "ai-result": "#/care/result",
+    advice: "#/care/advice",
+    issue: "#/care/issue",
+    ripeness: "#/care/legacy",
+    feedback: "#/care/service",
+    ending: "#/care/service",
+    product: "#/profile",
+    bloom: "#/science/pollination",
+    pollination: "#/science/pollination",
+    pollen: "#/science/growth",
+    anatomy: "#/science/growth",
+    fertilization: "#/science/growth",
+    "pollination-complete": "#/science/growth",
+    growth: "#/science/growth",
+    daynight: "#/science/day-night",
+    "flavor-foundation": "#/science/summary"
+  };
+
+  var routeScenes = {
+    start: "start",
+    care: "care-home",
+    "care/camera-guide": "camera-guide",
+    "care/camera": "camera-guide",
+    "care/preview": "preview",
+    "care/analyzing": "preview",
+    "care/result": "ai-result",
+    "care/advice": "advice",
+    "care/issue": "issue",
+    "care/service": "feedback",
+    profile: "product",
+    "science/pollination": "bloom",
+    "science/growth": "growth",
+    "science/day-night": "daynight",
+    "science/summary": "flavor-foundation"
   };
 
   function schedule(callback, delay) {
@@ -64,11 +221,28 @@
 
   function showScene(name) {
     clearTimers();
+    var previousScene = scenes.find(function (scene) { return scene.classList.contains("is-active"); });
+    if (previousScene && previousScene.dataset.scene === "camera" && name !== "camera") stopCamera();
     state.scene = name;
+    app.dataset.currentScene = name;
+    app.dataset.currentModule = sceneModules[name] || "system";
+    var focusedCareFlow = ["start", "camera-guide", "camera", "preview", "analyzing"].indexOf(name) >= 0;
+    app.classList.toggle("has-primary-nav", !focusedCareFlow);
     scenes.forEach(function (scene) {
       var active = scene.dataset.scene === name;
+      scene.classList.remove("is-leaving");
       scene.classList.toggle("is-active", active);
       scene.setAttribute("aria-hidden", active ? "false" : "true");
+    });
+    if (previousScene && previousScene.dataset.scene !== name) {
+      previousScene.classList.add("is-leaving");
+      schedule(function () { previousScene.classList.remove("is-leaving"); }, reducedMotion ? 1 : 360);
+    }
+    primaryNavigation.setAttribute("aria-hidden", focusedCareFlow ? "true" : "false");
+    primaryNavigationButtons.forEach(function (button) {
+      var active = button.dataset.module === sceneModules[name];
+      button.classList.toggle("is-current", active);
+      button.setAttribute("aria-current", active ? "page" : "false");
     });
 
     if (name === "bloom") playBloomSequence();
@@ -76,6 +250,16 @@
     if (name === "pollen") showPollenStep(0);
     if (name === "anatomy") showAnatomyStep(0);
     if (name === "fertilization") resetFertilization();
+    if (name === "growth") updateGrowth(Number(growthRange.value));
+    if (name === "flavor-foundation") showFoundationStep(state.foundationStep);
+    if (name === "daynight") updateDaynight(Number(daynightRange.value));
+    if (name === "ripeness") showRipeness(state.ripenessState);
+    if (name === "preview") syncCapturedImages();
+    if (name === "ai-result") renderAiResult();
+    if (name === "advice") renderAdvice();
+    if (!state.routeOverlay && sceneRoutes[name] && window.location.hash !== sceneRoutes[name]) {
+      window.history.replaceState(null, "", sceneRoutes[name]);
+    }
   }
 
   function playBloomSequence() {
@@ -138,7 +322,7 @@
     pollinationDetailImage.src = "assets/ch1-pollen-release.webp";
     pollinationDetailImage.alt = "桃花花粉粒局部观察图";
     pollinationStatus.textContent = "花粉已经附着。";
-    pollinationDetail.textContent = "继续移动到画面最下方大花朵的柱头。";
+    pollinationDetail.textContent = "继续移动到右上方结构图中的柱头。";
   }
 
   function completePollination() {
@@ -152,7 +336,7 @@
     pollinationDetailImage.alt = "桃花柱头与花柱纵剖面观察图";
     pollinationStatus.textContent = "花粉抵达柱头，授粉完成。";
     pollinationDetail.textContent = "柱头接收花粉，但授粉还不是受精。";
-    schedule(function () { showScene("pollen"); }, reducedMotion ? 700 : 1500);
+    schedule(function () { showScene("pollen"); }, reducedMotion ? 500 : 1200);
   }
 
   function beePointerDown(event) {
@@ -204,7 +388,7 @@
           ? "沿着提示路径，把花粉带到柱头。"
           : "沿着提示路径，先到花药，再到柱头。";
         pollinationDetail.textContent = state.bee.pollen
-          ? "目标在画面最下方的大花朵中央。"
+          ? "目标在右上方结构图中绿色花柱的顶端。"
           : "目标区域已经扩大。";
       } else {
         pollinationStatus.textContent = state.bee.pollen
@@ -283,8 +467,8 @@
 
   function advanceFertilization() {
     if (state.scene !== "fertilization") return;
-    if (state.fertilizationStep === 4) {
-      showScene("complete");
+    if (state.fertilizationStep === 5) {
+      showScene("pollination-complete");
       return;
     }
 
@@ -303,10 +487,479 @@
       fertilizationStatus.textContent = "花粉管进入子房，向胚珠延伸。";
       fertilizationDetail.textContent = "它继续寻找胚珠中的胚囊。";
       fertilizationButtonLabel.textContent = "继续：抵达胚珠";
-    } else {
+    } else if (state.fertilizationStep === 4) {
       fertilizationStatus.textContent = "花粉管进入胚珠，释放两个精细胞。";
       fertilizationDetail.textContent = "一个与卵细胞结合形成受精卵，另一个参与形成胚乳。";
-      fertilizationButtonLabel.textContent = "查看本章结论";
+      fertilizationButtonLabel.textContent = "继续：观察受精卵形成";
+    } else {
+      fertilizationStatus.textContent = "精细胞与卵细胞结合，形成受精卵。";
+      fertilizationDetail.textContent = "受精完成后，胚珠继续发育为种子，子房逐渐膨大成果实。";
+      fertilizationButtonLabel.textContent = "查看从花到果";
+    }
+  }
+
+  var growthCopy = [
+    ["坐果", "受精后，胚珠开始发育为种子，子房逐渐形成幼果。"],
+    ["幼果生长", "幼果早期生长较快，细胞数量和体积不断变化。"],
+    ["果核硬化", "内果皮逐渐木质化，形成保护种子的果核；这段时间，果实外观的生长相对放缓。"],
+    ["果实膨大", "随后，果实再次明显膨大，并逐渐接近成熟。"],
+    ["接近成熟", "果实接近成熟体量，色泽、质地和内部代谢仍在变化。"]
+  ];
+
+  function growthStepFromValue(value) {
+    if (value < 18) return 0;
+    if (value < 38) return 1;
+    if (value < 62) return 2;
+    if (value < 84) return 3;
+    return 4;
+  }
+
+  function updateGrowth(value) {
+    var progress = Math.max(0, Math.min(100, value));
+    var step = growthStepFromValue(progress);
+    state.growthStep = step;
+    growthStage.dataset.step = String(step);
+    growthRange.value = String(progress);
+    growthRange.style.setProperty("--range-progress", progress + "%");
+    growthFrames.forEach(function (frame, index) {
+      frame.classList.toggle("is-active", index === step);
+    });
+    growthStageName.textContent = growthCopy[step][0];
+    growthStageDetail.textContent = growthCopy[step][1];
+    toFlavorButton.hidden = false;
+    if (progress >= 100) {
+      growthHint.textContent = "从坐果到再次膨大，生长节奏并不相同。";
+    }
+  }
+
+  function growthReleased() {
+    if (Number(growthRange.value) >= 100) return;
+    state.growthReleaseCount += 1;
+    growthHint.textContent = state.growthReleaseCount >= 2
+      ? "沿着时间轴滑到果实膨大。"
+      : "继续向前滑动，观察后面的生长阶段。";
+  }
+
+  var foundationCopy = [
+    ["品种基础", "品种决定果形、成熟期和风味表现的遗传基础。", "继续：成熟过程"],
+    ["生长与成熟", "授粉、坐果、膨大和成熟共同构成果实形成过程。", "继续：环境与管理"],
+    ["环境与管理", "光照、温度、水分、土壤条件和栽培管理共同影响生长表现。", "返回食用与保存"]
+  ];
+
+  function showFoundationStep(step) {
+    state.foundationStep = Math.max(0, Math.min(foundationFrames.length - 1, step));
+    foundationObserver.dataset.step = String(state.foundationStep);
+    foundationFrames.forEach(function (frame, index) {
+      frame.classList.toggle("is-active", index === state.foundationStep);
+    });
+    foundationTabs.forEach(function (tab, index) {
+      tab.classList.toggle("is-current", index === state.foundationStep);
+      tab.setAttribute("aria-selected", index === state.foundationStep ? "true" : "false");
+    });
+    foundationName.textContent = foundationCopy[state.foundationStep][0];
+    foundationDetail.textContent = foundationCopy[state.foundationStep][1];
+    foundationNextLabel.textContent = foundationCopy[state.foundationStep][2];
+  }
+
+  function advanceFoundation() {
+    if (state.foundationStep < foundationFrames.length - 1) {
+      showFoundationStep(state.foundationStep + 1);
+    } else {
+      showScene("care-home");
+    }
+  }
+
+  function updateDaynight(value) {
+    var progress = Math.max(0, Math.min(100, value));
+    var nightOpacity = progress <= 40 ? 0 : Math.min(1, (progress - 40) / 15);
+    var photoOpacity = progress <= 40 ? 1 : Math.max(0, 1 - ((progress - 40) / 15));
+    var ripeOpacity = Math.max(0, Math.min(1, (progress - 88) / 12));
+    daynightRange.value = String(progress);
+    daynightRange.style.setProperty("--range-progress", progress + "%");
+    daynightStage.style.setProperty("--night-opacity", nightOpacity.toFixed(2));
+    daynightStage.style.setProperty("--photo-opacity", photoOpacity.toFixed(2));
+    daynightStage.style.setProperty("--day-flow-opacity", photoOpacity.toFixed(2));
+    daynightStage.style.setProperty("--ripe-opacity", ripeOpacity.toFixed(2));
+    daynightStage.classList.toggle("is-complete", progress >= 100);
+    toRipenessButton.hidden = progress < 100 && state.daynightReleaseCount < 2;
+
+    if (progress < 40) {
+      daynightStage.dataset.phase = "day";
+      daynightName.textContent = "白天";
+      daynightDetail.textContent = "叶片进行光合作用，合成有机物；白天，呼吸也在进行。";
+    } else if (progress < 55) {
+      daynightStage.dataset.phase = "twilight";
+      daynightName.textContent = "黄昏";
+      daynightDetail.textContent = "光合作用随光线减弱，植物的呼吸仍在进行。";
+    } else if (progress < 90) {
+      daynightStage.dataset.phase = "night";
+      daynightName.textContent = "夜晚";
+      daynightDetail.textContent = "没有光合作用，植物的呼吸仍在进行，并消耗一部分有机物。";
+    } else if (progress < 100) {
+      daynightStage.dataset.phase = "net";
+      daynightName.textContent = "首个昼夜结束";
+      daynightDetail.textContent = "合成减去消耗，剩下的才是净积累。";
+    } else {
+      daynightStage.dataset.phase = "complete";
+      daynightName.textContent = "多个昼夜后";
+      daynightDetail.textContent = "成熟过程中，糖、酸、香气物质和质地都在发生变化。";
+      daynightHint.textContent = "风味不由土壤、光照或温度中的单一条件决定。";
+    }
+  }
+
+  function daynightReleased() {
+    if (Number(daynightRange.value) >= 100) return;
+    state.daynightReleaseCount += 1;
+    if (state.daynightReleaseCount >= 2) {
+      daynightHint.textContent = "也可以直接查看品质形成总结。";
+      toRipenessButton.hidden = false;
+    } else {
+      daynightHint.textContent = "继续滑动，观察完整的昼夜变化。";
+    }
+  }
+
+  var aiResultCopy = {
+    firm: {
+      label: "偏硬",
+      summary: "果面仍接近偏硬阶段，建议结合果肩手感与香气再次确认。",
+      image: "assets/ch5-firm.webp",
+      adviceImage: "assets/ch5-storage-room.webp",
+      adviceTitle: "阴凉通风，继续观察",
+      advice: "单层摆放，避免挤压和阳光直射。每天轻按果肩并闻气味，达到喜欢的软硬度后食用。"
+    },
+    turning: {
+      label: "正在转熟",
+      summary: "果面状态接近转熟阶段，建议结合果肩手感与香气再次确认。",
+      image: "assets/ch5-turning-ripe.webp",
+      adviceImage: "assets/ch5-storage-room.webp",
+      adviceTitle: "阴凉通风，近期食用",
+      advice: "单层摆放，避免挤压和阳光直射。每天轻按果肩并闻气味，达到喜欢的软硬度后食用。"
+    },
+    ready: {
+      label: "适合食用",
+      summary: "照片特征接近适食阶段，请结合正常香气与果肩弹性确认。",
+      image: "assets/ch5-ready.webp",
+      adviceImage: "assets/ch5-storage-cold.webp",
+      adviceTitle: "建议尽快食用",
+      advice: "如果暂不食用，可按包装说明短时冷藏并避免挤压。食用前取出，再检查果面、气味和手感。"
+    },
+    soft: {
+      label: "偏软",
+      summary: "果面特征接近偏软阶段，需要结合是否有异味、渗液或霉变判断。",
+      image: "assets/ch5-soft.webp",
+      adviceImage: "assets/ch5-storage-cold.webp",
+      adviceTitle: "尽快食用并检查异常",
+      advice: "避免继续常温久放。食用前检查是否有异常异味、渗液或霉变；发现异常时请勿食用。"
+    },
+    abnormal: {
+      label: "发现异常特征",
+      summary: "照片中出现疑似损伤或异常特征，无法仅凭图像确认是否可以食用。",
+      image: "assets/ch5-abnormal-reference.webp"
+    },
+    unknown: {
+      label: "暂时无法判断",
+      summary: "照片可能过暗、模糊或桃子没有完整入镜，请重新拍摄并手动检查。",
+      image: "assets/ch5-turning-ripe.webp"
+    }
+  };
+
+  function stopCamera() {
+    if (!state.cameraStream) return;
+    state.cameraStream.getTracks().forEach(function (track) { track.stop(); });
+    state.cameraStream = null;
+    cameraVideo.srcObject = null;
+  }
+
+  function syncCapturedImages() {
+    var source = state.capturedImage || "assets/ch5-turning-ripe.webp";
+    previewImage.src = source;
+    analysisImage.src = source;
+    resultImage.src = source;
+  }
+
+  function setCapturedImage(source, isObjectUrl) {
+    if (state.capturedObjectUrl && state.capturedObjectUrl !== source) {
+      window.URL.revokeObjectURL(state.capturedObjectUrl);
+    }
+    state.capturedObjectUrl = isObjectUrl ? source : "";
+    state.capturedImage = source;
+    syncCapturedImages();
+    showScene("preview");
+  }
+
+  function useDemoPhoto() {
+    setCapturedImage("assets/ch5-turning-ripe.webp", false);
+  }
+
+  function pickPhoto() {
+    photoInput.value = "";
+    photoInput.click();
+  }
+
+  function handlePhotoSelected() {
+    var file = photoInput.files && photoInput.files[0];
+    if (!file) return;
+    if (!file.type || file.type.indexOf("image/") !== 0) {
+      window.alert("请选择图片文件。");
+      return;
+    }
+    setCapturedImage(window.URL.createObjectURL(file), true);
+  }
+
+  function openCamera() {
+    showScene("camera");
+    cameraStatus.textContent = "正在请求相机权限…";
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      cameraStatus.textContent = "当前环境无法打开相机，请使用相册或示范照片。";
+      return;
+    }
+    navigator.mediaDevices.getUserMedia({
+      video: {
+        facingMode: { ideal: "environment" },
+        width: { ideal: 1280 },
+        height: { ideal: 1280 }
+      },
+      audio: false
+    }).then(function (stream) {
+      if (state.scene !== "camera") {
+        stream.getTracks().forEach(function (track) { track.stop(); });
+        return;
+      }
+      state.cameraStream = stream;
+      cameraVideo.srcObject = stream;
+      cameraVideo.play();
+      cameraStatus.textContent = "保持桃子完整、光线均匀";
+    }).catch(function () {
+      cameraStatus.textContent = "未获得相机权限，请使用相册或示范照片。";
+    });
+  }
+
+  function captureCameraFrame() {
+    if (!state.cameraStream || cameraVideo.readyState < 2) {
+      cameraStatus.textContent = "相机尚未准备好，可选择相册或示范照片。";
+      return;
+    }
+    var width = cameraVideo.videoWidth;
+    var height = cameraVideo.videoHeight;
+    var side = Math.min(width, height);
+    var sourceX = (width - side) / 2;
+    var sourceY = (height - side) / 2;
+    cameraCanvas.width = 900;
+    cameraCanvas.height = 900;
+    cameraCanvas.getContext("2d").drawImage(cameraVideo, sourceX, sourceY, side, side, 0, 0, 900, 900);
+    cameraCanvas.toBlob(function (blob) {
+      if (!blob) return;
+      setCapturedImage(window.URL.createObjectURL(blob), true);
+    }, "image/jpeg", 0.9);
+  }
+
+  function selectedMockResult() {
+    var queryResult = new URLSearchParams(window.location.search).get("result");
+    return aiResultCopy[queryResult] ? queryResult : "turning";
+  }
+
+  function beginAnalysis() {
+    syncCapturedImages();
+    showScene("analyzing");
+    schedule(function () {
+      state.aiResult = selectedMockResult();
+      showScene("ai-result");
+    }, reducedMotion ? 120 : 1750);
+  }
+
+  function renderAiResult() {
+    var result = aiResultCopy[state.aiResult] || aiResultCopy.turning;
+    var normal = ["firm", "turning", "ready", "soft"].indexOf(state.aiResult) >= 0;
+    resultBadge.textContent = result.label;
+    resultTitle.textContent = result.label;
+    resultSummary.textContent = result.summary;
+    resultImage.src = state.capturedImage || result.image;
+    resultDisclaimer.textContent = normal
+      ? "照片无法判断实际硬度、内部损伤、甜度或气味。"
+      : "图像判断仅作提示，请以人工检查和食用安全原则为准。";
+    normalResultActions.hidden = !normal;
+    specialResultActions.hidden = normal;
+    specialResultButton.textContent = state.aiResult === "abnormal" ? "查看异常与售后" : "查看人工判断方法";
+  }
+
+  function openManual(trigger) {
+    state.overlayReturnFocus = trigger || document.activeElement;
+    manualOverlay.hidden = false;
+    manualOverlay.querySelector("[data-manual-state]").focus();
+  }
+
+  function closeManual(restoreFocus) {
+    manualOverlay.hidden = true;
+    if (restoreFocus !== false && state.overlayReturnFocus && state.overlayReturnFocus.focus) {
+      state.overlayReturnFocus.focus();
+    }
+  }
+
+  function confirmManualState(name) {
+    if (!aiResultCopy[name]) return;
+    state.aiResult = name;
+    closeManual(false);
+    showScene("advice");
+  }
+
+  function renderAdvice() {
+    var result = aiResultCopy[state.aiResult] || aiResultCopy.turning;
+    adviceStateName.textContent = result.label;
+    adviceTitle.textContent = result.adviceTitle || "结合手感与气味再次确认";
+    adviceDetail.textContent = result.advice || "请重新检查果肩手感、正常香气以及是否有霉变、异味或异常渗液。";
+    adviceImage.src = result.adviceImage || "assets/ch5-storage-room.webp";
+  }
+
+  var ripenessCopy = {
+    firm: ["偏硬", "果肩仍硬、香气较弱。放在阴凉通风处，继续观察。"],
+    turning: ["正在转熟", "果肩略有弹性，香气开始出现。准备近期食用。"],
+    ready: ["适合食用", "具有品种应有的底色、正常香气与适度弹性。建议尽快食用。"],
+    soft: ["偏软", "果肩明显变软。尽快食用，并检查是否有异味、渗液或霉变。"]
+  };
+
+  function showRipeness(name) {
+    if (!ripenessCopy[name]) name = "firm";
+    state.ripenessState = name;
+    ripenessObserver.dataset.state = name;
+    ripenessFrames.forEach(function (frame) {
+      frame.classList.toggle("is-active", frame.dataset.ripenessFrame === name);
+    });
+    ripenessTabs.forEach(function (tab) {
+      var active = tab.dataset.ripenessState === name;
+      tab.classList.toggle("is-current", active);
+      tab.setAttribute("aria-selected", active ? "true" : "false");
+    });
+    ripenessName.textContent = ripenessCopy[name][0];
+    ripenessDetail.textContent = ripenessCopy[name][1];
+  }
+
+  function openMenu(trigger) {
+    state.overlayReturnFocus = trigger || document.activeElement;
+    chapterMenu.hidden = false;
+    chapterMenu.querySelector("[data-menu-close]").focus();
+  }
+
+  function closeMenu(restoreFocus) {
+    chapterMenu.hidden = true;
+    if (restoreFocus !== false && state.overlayReturnFocus && state.overlayReturnFocus.focus) state.overlayReturnFocus.focus();
+  }
+
+  var infoContent = {
+    storageRoom: {
+      eyebrow: "储存提示",
+      title: "准备近期食用",
+      image: "assets/ch5-storage-room.webp",
+      alt: "阴凉通风处储存桃果",
+      copy: "<p><strong>阴凉通风</strong></p><p>避免阳光直射和相互挤压，继续观察果面、果肩手感和气味。</p>"
+    },
+    storageCold: {
+      eyebrow: "储存提示",
+      title: "需要延缓成熟",
+      image: "assets/ch5-storage-cold.webp",
+      alt: "冷藏保存桃果",
+      copy: "<p><strong>按包装说明冷藏</strong></p><p>食用前取出，再次观察果面、手感和气味。不要依据单一红晕判断成熟。</p>"
+    },
+    abnormal: {
+      eyebrow: "食用安全",
+      title: "发现异常？",
+      image: "assets/ch5-abnormal-reference.webp",
+      alt: "桃果明显异常状态示例",
+      copy: "<p>如果出现明显霉变、异常异味或异常渗液，请勿食用。</p><p>明显霉变的桃应整只丢弃，也不要凑近闻霉变部位。食用前用流动清水清洗，不使用洗涤剂。</p>"
+    },
+    afterSales: {
+      eyebrow: "虚拟原型",
+      title: "售后说明",
+      image: "assets/ch5-package-product.webp",
+      alt: "一枝鲜桃包装与产品",
+      copy: "<p>如果发现明显霉变、异常异味或异常渗液，请勿食用。</p><p>当前虚拟原型不处理真实售后，请以正式包装标注为准。</p>"
+    },
+    repurchase: {
+      eyebrow: "虚拟原型",
+      title: "再次购买",
+      image: "assets/ch5-package-product.webp",
+      alt: "一枝鲜桃包装与产品",
+      copy: "<p>当前为商品入口示范，不生成订单，也不进入支付流程。</p><p>正式使用时需要连接经过确认的商品页面。</p>"
+    },
+    privacy: {
+      eyebrow: "虚拟原型",
+      title: "隐私说明",
+      image: "assets/ch5-package-product.webp",
+      alt: "一枝鲜桃包装与产品",
+      copy: "<p>本页面只在当前浏览会话中记录选择，不提交姓名、电话、地址、精确位置或完整产品编码。</p><p>关闭页面后，本次体验选择不再保留。</p>"
+    }
+  };
+
+  function openInfo(kind, trigger, isRoute) {
+    var content = infoContent[kind];
+    if (!content) return;
+    state.overlayReturnFocus = trigger || document.activeElement;
+    state.routeOverlay = Boolean(isRoute);
+    infoEyebrow.textContent = content.eyebrow;
+    infoTitle.textContent = content.title;
+    infoImage.src = content.image;
+    infoImage.alt = content.alt;
+    infoCopy.innerHTML = content.copy;
+    infoOverlay.hidden = false;
+    infoOverlay.querySelector("[data-info-close]").focus();
+  }
+
+  function closeInfo() {
+    infoOverlay.hidden = true;
+    if (state.routeOverlay && state.scene === "feedback") {
+      window.history.replaceState(null, "", "#/care/service");
+    }
+    state.routeOverlay = false;
+    if (state.overlayReturnFocus && state.overlayReturnFocus.focus) state.overlayReturnFocus.focus();
+  }
+
+  function openStorage(trigger) {
+    var useCold = state.ripenessState === "ready" || state.ripenessState === "soft";
+    openInfo(useCold ? "storageCold" : "storageRoom", trigger, false);
+  }
+
+  function submitFeedback(event) {
+    event.preventDefault();
+    var maturity = feedbackForm.querySelector("input[name='maturity']:checked");
+    var experiences = Array.prototype.slice.call(feedbackForm.querySelectorAll("input[name='experience']:checked"));
+    if (!maturity && experiences.length === 0) {
+      feedbackStatus.textContent = "请选择至少一项食用感受。";
+      return;
+    }
+    var record = {
+      maturity: maturity ? maturity.value : "",
+      experience: experiences.map(function (input) { return input.value; })
+    };
+    try { window.sessionStorage.setItem("peach-h5-feedback", JSON.stringify(record)); } catch (error) { /* Session storage is optional. */ }
+    feedbackStatus.textContent = "已在当前页面记录本次体验。";
+  }
+
+  function resetExperience() {
+    growthRange.value = "0";
+    daynightRange.value = "0";
+    state.growthReleaseCount = 0;
+    state.daynightReleaseCount = 0;
+    state.foundationStep = 0;
+    state.ripenessState = "firm";
+    feedbackForm.reset();
+    feedbackStatus.textContent = "";
+    updateGrowth(0);
+    updateDaynight(0);
+    showFoundationStep(0);
+    showRipeness("firm");
+    window.history.replaceState(null, "", window.location.pathname + window.location.search);
+    showScene("start");
+  }
+
+  function handleHashRoute() {
+    var route = window.location.hash.replace("#/", "");
+    if (routeScenes[route]) {
+      if (state.scene !== routeScenes[route]) showScene(routeScenes[route]);
+      return;
+    }
+    if (route === "after-sales" || route === "repurchase" || route === "privacy") {
+      if (state.scene !== "issue") showScene("issue");
+      var infoKind = route === "after-sales" ? "afterSales" : route;
+      openInfo(infoKind, null, true);
     }
   }
 
@@ -322,9 +975,85 @@
     if (delta < -46) showScene("bloom");
   }
 
-  startButton.addEventListener("click", function () { showScene("product"); });
+  startButton.addEventListener("click", function () { showScene("care-home"); });
   growthButton.addEventListener("click", function () { showScene("bloom"); });
-  replayButton.addEventListener("click", function () { showScene("start"); });
+  replayButton.addEventListener("click", function () { showScene("care-home"); });
+  toGrowthButton.addEventListener("click", function () { showScene("growth"); });
+  toFlavorButton.addEventListener("click", function () { showScene("daynight"); });
+  foundationNext.addEventListener("click", advanceFoundation);
+  toRipenessButton.addEventListener("click", function () { showScene("flavor-foundation"); });
+  toFeedbackButton.addEventListener("click", function () { showScene("feedback"); });
+  finishButton.addEventListener("click", function () { showScene("ending"); });
+  growthRange.addEventListener("input", function () { updateGrowth(Number(growthRange.value)); });
+  growthRange.addEventListener("change", growthReleased);
+  daynightRange.addEventListener("input", function () { updateDaynight(Number(daynightRange.value)); });
+  daynightRange.addEventListener("change", daynightReleased);
+  document.querySelectorAll("[data-growth-value]").forEach(function (button) {
+    button.addEventListener("click", function () { updateGrowth(Number(button.dataset.growthValue)); });
+  });
+  document.querySelectorAll("[data-daynight-value]").forEach(function (button) {
+    button.addEventListener("click", function () { updateDaynight(Number(button.dataset.daynightValue)); });
+  });
+  storageButton.addEventListener("click", function () { openStorage(storageButton); });
+  abnormalButton.addEventListener("click", function () { openInfo("abnormal", abnormalButton, false); });
+  feedbackForm.addEventListener("submit", submitFeedback);
+  globalMenuButton.addEventListener("click", function () { openMenu(globalMenuButton); });
+  endingMenuButton.addEventListener("click", function () { openMenu(endingMenuButton); });
+  careStartButton.addEventListener("click", function () { showScene("camera-guide"); });
+  openCameraButton.addEventListener("click", openCamera);
+  choosePhotoButton.addEventListener("click", pickPhoto);
+  useDemoButton.addEventListener("click", useDemoPhoto);
+  photoInput.addEventListener("change", handlePhotoSelected);
+  closeCameraButton.addEventListener("click", function () { showScene("camera-guide"); });
+  cameraGalleryButton.addEventListener("click", pickPhoto);
+  cameraShutterButton.addEventListener("click", captureCameraFrame);
+  cameraDemoButton.addEventListener("click", useDemoPhoto);
+  retakeButton.addEventListener("click", function () { showScene("camera-guide"); });
+  analyzeButton.addEventListener("click", beginAnalysis);
+  confirmResultButton.addEventListener("click", function () { showScene("advice"); });
+  adjustResultButton.addEventListener("click", function () { openManual(adjustResultButton); });
+  resultRetakeButton.addEventListener("click", function () { showScene("camera-guide"); });
+  specialResultButton.addEventListener("click", function () {
+    if (state.aiResult === "abnormal") showScene("issue");
+    else openManual(specialResultButton);
+  });
+  specialRetakeButton.addEventListener("click", function () { showScene("camera-guide"); });
+  adviceProfileButton.addEventListener("click", function () { showScene("product"); });
+  afterSalesButton.addEventListener("click", function () { openInfo("afterSales", afterSalesButton, false); });
+  issueRetakeButton.addEventListener("click", function () { showScene("camera-guide"); });
+
+  foundationTabs.forEach(function (tab) {
+    tab.addEventListener("click", function () { showFoundationStep(Number(tab.dataset.foundationStep)); });
+  });
+  ripenessTabs.forEach(function (tab) {
+    tab.addEventListener("click", function () { showRipeness(tab.dataset.ripenessState); });
+  });
+  document.querySelectorAll("[data-menu-close]").forEach(function (button) {
+    button.addEventListener("click", closeMenu);
+  });
+  document.querySelectorAll("[data-jump]").forEach(function (button) {
+    button.addEventListener("click", function () {
+      closeMenu(false);
+      showScene(button.dataset.jump);
+    });
+  });
+  primaryNavigationButtons.forEach(function (button) {
+    button.addEventListener("click", function () { showScene(button.dataset.primaryJump); });
+  });
+  document.querySelectorAll("[data-info-close]").forEach(function (button) {
+    button.addEventListener("click", closeInfo);
+  });
+  document.querySelectorAll("[data-manual-close]").forEach(function (button) {
+    button.addEventListener("click", closeManual);
+  });
+  document.querySelectorAll("[data-manual-state]").forEach(function (button) {
+    button.addEventListener("click", function () { confirmManualState(button.dataset.manualState); });
+  });
+  document.querySelectorAll("[data-service-route]").forEach(function (button) {
+    button.addEventListener("click", function () {
+      window.location.hash = "#/" + button.dataset.serviceRoute;
+    });
+  });
 
   document.querySelectorAll("[data-back]").forEach(function (button) {
     button.addEventListener("click", function () { showScene(button.dataset.back); });
@@ -347,8 +1076,35 @@
   });
   anatomyNext.addEventListener("click", function () { showScene("fertilization"); });
 
+  document.addEventListener("keydown", function (event) {
+    if (event.key !== "Escape") return;
+    if (!infoOverlay.hidden) closeInfo();
+    else if (!manualOverlay.hidden) closeManual();
+    else if (!chapterMenu.hidden) closeMenu();
+  });
+
+  window.addEventListener("hashchange", handleHashRoute);
+
   document.addEventListener("visibilitychange", function () {
-    if (document.hidden) clearTimers();
+    if (document.hidden) {
+      clearTimers();
+      if (state.scene === "camera") stopCamera();
+    }
     else if (state.scene === "bloom") playBloomSequence();
   });
+
+  window.addEventListener("beforeunload", function () {
+    stopCamera();
+    if (state.capturedObjectUrl) window.URL.revokeObjectURL(state.capturedObjectUrl);
+  });
+
+  updateGrowth(0);
+  updateDaynight(0);
+  showFoundationStep(0);
+  showRipeness("firm");
+  if (window.location.hash.indexOf("#/") === 0) {
+    handleHashRoute();
+  } else {
+    showScene("start");
+  }
 })();

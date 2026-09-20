@@ -76,6 +76,17 @@ button {
   pointer-events: auto;
 }
 
+.scene.is-leaving {
+  visibility: visible;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.scene:not(.is-active):not(.is-leaving),
+.scene:not(.is-active):not(.is-leaving) * {
+  visibility: hidden !important;
+}
+
 .primary-action {
   min-height: 48px;
   padding: 0 18px;
@@ -184,7 +195,7 @@ button {
 
 .product-figure {
   position: relative;
-  height: 43%;
+  height: 35%;
   overflow: hidden;
   background: var(--paper-bright);
 }
@@ -209,12 +220,12 @@ button {
 }
 
 .product-record {
-  padding: 18px 22px 0;
+  padding: 12px 22px 70px;
 }
 
 .product-name {
   font-family: "Microsoft YaHei", sans-serif;
-  font-size: 20px;
+  font-size: 18px;
   line-height: 1.4;
 }
 
@@ -224,7 +235,7 @@ button {
 }
 
 .product-record dl div {
-  min-height: 34px;
+  min-height: 29px;
   display: grid;
   grid-template-columns: 64px 1fr;
   align-items: center;
@@ -738,7 +749,8 @@ button {
 .fertilization-stage[data-step="1"] .tube-frame-1,
 .fertilization-stage[data-step="2"] .tube-frame-2,
 .fertilization-stage[data-step="3"] .tube-frame-2,
-.fertilization-stage[data-step="4"] .tube-frame-3 {
+.fertilization-stage[data-step="4"] .tube-frame-3,
+.fertilization-stage[data-step="5"] .tube-frame-4 {
   opacity: 1;
 }
 
@@ -760,11 +772,13 @@ button {
 .label-style { top: 32%; left: 16%; }
 .label-ovary { top: 66%; left: 10%; }
 .label-ovule { top: 74%; right: 10%; }
+.label-zygote { top: 74%; left: 50%; }
 
 .fertilization-stage[data-step="1"] .label-stigma,
 .fertilization-stage[data-step="2"] .label-style,
 .fertilization-stage[data-step="3"] .label-ovary,
-.fertilization-stage[data-step="4"] .label-ovule {
+.fertilization-stage[data-step="4"] .label-ovule,
+.fertilization-stage[data-step="5"] .label-zygote {
   opacity: 1;
   transform: translateY(0);
 }
@@ -806,7 +820,8 @@ button {
   color: var(--paper-bright);
 }
 
-.fertilization-stage[data-step="4"] .germination-action {
+.fertilization-stage[data-step="4"] .germination-action,
+.fertilization-stage[data-step="5"] .germination-action {
   background: var(--leaf);
   border-color: var(--leaf);
 }
@@ -857,7 +872,8 @@ button {
 .fertilization-stage[data-step="3"] [data-process-step="1"] i,
 .fertilization-stage[data-step="3"] [data-process-step="2"] i,
 .fertilization-stage[data-step="3"] [data-process-step="3"] i,
-.fertilization-stage[data-step="4"] .process-progress i {
+.fertilization-stage[data-step="4"] .process-progress i,
+.fertilization-stage[data-step="5"] .process-progress i {
   border-color: var(--peach-deep);
   background: var(--peach-deep);
 }
@@ -865,7 +881,8 @@ button {
 .fertilization-stage[data-step="1"] [data-process-step="1"],
 .fertilization-stage[data-step="2"] [data-process-step="2"],
 .fertilization-stage[data-step="3"] [data-process-step="3"],
-.fertilization-stage[data-step="4"] [data-process-step="4"] {
+.fertilization-stage[data-step="4"] [data-process-step="4"],
+.fertilization-stage[data-step="5"] [data-process-step="5"] {
   color: var(--ink);
   font-weight: 600;
 }
@@ -965,6 +982,10 @@ button {
     padding-top: 68px;
   }
 
+  .product-figure {
+    height: 30%;
+  }
+
   .fertilization-stage {
     top: 68px;
   }
@@ -975,11 +996,12 @@ button {
   }
 
   .product-record {
-    padding-top: 12px;
+    padding: 8px 18px 58px;
   }
 
   .product-record dl div {
-    min-height: 30px;
+    min-height: 25px;
+    font-size: 11px;
   }
 
   .swipe-action {
@@ -1015,5 +1037,920 @@ button {
 
   .anatomy-next {
     bottom: 18px;
+  }
+}
+
+/* Prototype v4: supporting scenes and global navigation */
+[hidden] {
+  display: none !important;
+}
+
+.global-menu {
+  position: absolute;
+  z-index: 28;
+  top: 19px;
+  right: 14px;
+  width: 38px;
+  height: 38px;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  font-size: 26px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.experience[data-current-scene="start"] .global-menu {
+  display: none;
+}
+
+.experience.has-primary-nav .scene {
+  bottom: 64px;
+}
+
+.primary-navigation {
+  position: absolute;
+  z-index: 45;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 64px;
+  padding: 5px 8px 7px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 2px;
+  border-top: 1px solid var(--line);
+  background: rgba(251, 250, 247, 0.97);
+}
+
+.experience[data-current-scene="start"] .primary-navigation {
+  display: none;
+}
+
+.primary-navigation button {
+  min-width: 0;
+  min-height: 48px;
+  padding: 3px 2px 2px;
+  display: grid;
+  place-content: center;
+  gap: 2px;
+  border: 0;
+  border-top: 2px solid transparent;
+  background: transparent;
+  color: var(--ink-soft);
+  cursor: pointer;
+}
+
+.primary-navigation button span,
+.primary-navigation button small {
+  display: block;
+  overflow-wrap: anywhere;
+  letter-spacing: 0;
+}
+
+.primary-navigation button span {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.primary-navigation button small {
+  font-size: 9px;
+}
+
+.primary-navigation button.is-current {
+  border-top-color: var(--peach-deep);
+  color: var(--peach-deep);
+}
+
+.scene-heading > div {
+  min-width: 0;
+  padding-right: 40px;
+}
+
+.scene-heading h1 {
+  overflow-wrap: anywhere;
+}
+
+.secondary-action,
+.text-action,
+.service-links button {
+  min-height: 42px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: rgba(251, 250, 247, 0.9);
+  color: var(--ink);
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.text-action {
+  border-color: transparent;
+  background: transparent;
+  color: var(--peach-deep);
+}
+
+.global-menu:focus-visible,
+.primary-navigation button:focus-visible,
+.secondary-action:focus-visible,
+.text-action:focus-visible,
+.foundation-tabs button:focus-visible,
+.ripeness-tabs button:focus-visible,
+.feedback-options input:focus-visible + span,
+.service-links button:focus-visible,
+.chapter-list button:focus-visible,
+.overlay-heading button:focus-visible,
+.overlay-backdrop:focus-visible {
+  outline: 2px solid var(--peach-deep);
+  outline-offset: 2px;
+}
+
+.section-question {
+  color: var(--ink);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.stage-copy {
+  padding-left: 12px;
+  border-left: 2px solid var(--leaf);
+}
+
+.stage-copy b,
+.stage-copy span {
+  display: block;
+}
+
+.stage-copy b {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.stage-copy span {
+  margin-top: 4px;
+  color: var(--ink-soft);
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+.specimen-mark {
+  position: absolute;
+  left: 16px;
+  bottom: 12px;
+  padding: 5px 8px;
+  border-left: 2px solid var(--leaf);
+  background: rgba(251, 250, 247, 0.88);
+  color: var(--ink-soft);
+  font-size: 10px;
+}
+
+.next-chapter-action {
+  width: 100%;
+  min-height: 46px;
+  justify-content: space-between;
+  font-size: 12px;
+}
+
+/* Chapter 03 */
+.scene-growth,
+.scene-flavor-foundation,
+.scene-daynight,
+.scene-ripeness {
+  background: var(--paper-bright);
+}
+
+.growth-stage,
+.foundation-observer,
+.daynight-stage,
+.ripeness-observer {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.growth-images {
+  position: absolute;
+  top: 78px;
+  right: 0;
+  bottom: 250px;
+  left: 0;
+  overflow: hidden;
+  background: var(--paper-bright);
+}
+
+.growth-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transform: scale(0.995);
+  transition: opacity 340ms ease, transform 500ms ease;
+}
+
+.growth-frame.is-active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.growth-copy {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  min-height: 250px;
+  padding: 13px 18px 16px;
+  display: grid;
+  align-content: start;
+  gap: 9px;
+  border-top: 1px solid var(--line);
+  background: rgba(244, 242, 236, 0.98);
+}
+
+.timeline-control {
+  display: grid;
+  gap: 3px;
+}
+
+.timeline-control input[type="range"] {
+  width: 100%;
+  height: 26px;
+  margin: 0;
+  appearance: none;
+  background: transparent;
+  touch-action: none;
+  cursor: pointer;
+}
+
+.timeline-control input[type="range"]::-webkit-slider-runnable-track {
+  height: 3px;
+  border: 0;
+  background: linear-gradient(to right, var(--peach-deep) 0 var(--range-progress, 0%), rgba(41, 51, 45, 0.18) var(--range-progress, 0%) 100%);
+}
+
+.timeline-control input[type="range"]::-webkit-slider-thumb {
+  width: 22px;
+  height: 22px;
+  margin-top: -9.5px;
+  appearance: none;
+  border: 2px solid var(--paper-bright);
+  border-radius: 50%;
+  background: var(--peach-deep);
+  box-shadow: 0 0 0 1px var(--peach-deep);
+}
+
+.timeline-control input[type="range"]::-moz-range-track {
+  height: 3px;
+  border: 0;
+  background: rgba(41, 51, 45, 0.18);
+}
+
+.timeline-control input[type="range"]::-moz-range-progress {
+  height: 3px;
+  background: var(--peach-deep);
+}
+
+.timeline-control input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--paper-bright);
+  border-radius: 50%;
+  background: var(--peach-deep);
+}
+
+.timeline-labels,
+.daynight-labels {
+  display: grid;
+  color: var(--ink-soft);
+  font-size: 9px;
+}
+
+.timeline-labels {
+  grid-template-columns: repeat(5, 1fr);
+}
+
+.timeline-labels button,
+.daynight-labels button {
+  min-width: 0;
+  min-height: 22px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-size: inherit;
+  cursor: pointer;
+}
+
+.timeline-labels button {
+  text-align: center;
+}
+
+.timeline-labels button:first-child {
+  text-align: left;
+}
+
+.timeline-labels button:last-child {
+  text-align: right;
+}
+
+.interaction-note {
+  min-height: 16px;
+  color: var(--ink-soft);
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+/* Chapter 04: roots, leaves, fruit */
+.foundation-viewport {
+  position: absolute;
+  top: 78px;
+  right: 0;
+  bottom: 244px;
+  left: 0;
+  overflow: hidden;
+  background: var(--paper-bright);
+}
+
+.foundation-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 420ms ease;
+}
+
+.foundation-frame.is-active {
+  opacity: 1;
+}
+
+.material-route {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 250ms ease;
+}
+
+.foundation-observer[data-step="2"] .material-route {
+  opacity: 1;
+}
+
+.material-route path,
+.day-flow path {
+  fill: none;
+  stroke: rgba(173, 88, 109, 0.8);
+  stroke-width: 1.2;
+  stroke-dasharray: 3 3;
+  vector-effect: non-scaling-stroke;
+}
+
+.material-route circle {
+  fill: var(--peach-deep);
+  animation: routePulse 1.8s ease-in-out infinite;
+}
+
+.material-route circle:nth-of-type(2) { animation-delay: 300ms; }
+.material-route circle:nth-of-type(3) { animation-delay: 600ms; }
+
+@keyframes routePulse {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 1; }
+}
+
+.foundation-copy {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 244px;
+  padding: 13px 18px 16px;
+  display: grid;
+  gap: 10px;
+  border-top: 1px solid var(--line);
+  background: rgba(244, 242, 236, 0.98);
+}
+
+.foundation-tabs,
+.ripeness-tabs {
+  display: grid;
+  border: 1px solid var(--line);
+}
+
+.foundation-tabs {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.foundation-tabs button,
+.ripeness-tabs button {
+  min-height: 34px;
+  border: 0;
+  border-right: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink-soft);
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.foundation-tabs button:last-child,
+.ripeness-tabs button:last-child {
+  border-right: 0;
+}
+
+.foundation-tabs button.is-current,
+.ripeness-tabs button.is-current {
+  background: var(--leaf);
+  color: var(--paper-bright);
+}
+
+/* Chapter 04: day and night */
+.daynight-images {
+  position: absolute;
+  top: 78px;
+  right: 0;
+  bottom: 226px;
+  left: 0;
+  overflow: hidden;
+  background: var(--paper-bright);
+}
+
+.day-scene,
+.night-scene,
+.ripe-scene {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.night-scene {
+  opacity: var(--night-opacity, 0);
+}
+
+.ripe-scene {
+  opacity: var(--ripe-opacity, 0);
+  transition: opacity 600ms ease;
+}
+
+.daynight-stage.is-complete .ripe-scene {
+  opacity: var(--ripe-opacity, 1);
+}
+
+.day-flow {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: var(--day-flow-opacity, 1);
+  pointer-events: none;
+}
+
+.process-key {
+  position: absolute;
+  top: 14px;
+  left: 16px;
+  display: flex;
+  gap: 7px;
+}
+
+.process-key span {
+  padding: 4px 7px;
+  border-left: 2px solid;
+  background: rgba(251, 250, 247, 0.9);
+  font-size: 9px;
+}
+
+.photosynthesis-key {
+  border-color: var(--leaf);
+  opacity: var(--photo-opacity, 1);
+}
+
+.respiration-key {
+  border-color: var(--pollen);
+}
+
+.daynight-copy {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  min-height: 226px;
+  padding: 14px 18px 16px;
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  border-top: 1px solid var(--line);
+  background: rgba(244, 242, 236, 0.98);
+}
+
+.daynight-labels {
+  grid-template-columns: 40fr 15fr 35fr 10fr;
+}
+
+.daynight-labels button:nth-child(2),
+.daynight-labels button:nth-child(3) {
+  text-align: center;
+}
+
+.daynight-labels button:last-child {
+  text-align: right;
+}
+
+/* Chapter 05: ripeness */
+.ripeness-viewport {
+  position: absolute;
+  top: 78px;
+  right: 0;
+  bottom: 286px;
+  left: 0;
+  overflow: hidden;
+  background: var(--paper-bright);
+}
+
+.ripeness-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 320ms ease;
+}
+
+.ripeness-frame.is-active {
+  opacity: 1;
+}
+
+.ripeness-copy {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 286px;
+  padding: 13px 18px 16px;
+  display: grid;
+  align-content: start;
+  gap: 9px;
+  border-top: 1px solid var(--line);
+  background: rgba(244, 242, 236, 0.98);
+}
+
+.ripeness-tabs {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.ripeness-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+/* Feedback and ending */
+.scene-feedback,
+.scene-ending {
+  background: var(--paper);
+}
+
+.feedback-art,
+.ending-art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.feedback-art {
+  object-position: center top;
+}
+
+.feedback-sheet {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  min-height: 58%;
+  padding: 17px 20px 18px;
+  display: grid;
+  align-content: start;
+  gap: 11px;
+  border-top: 1px solid var(--ink);
+  background: rgba(244, 242, 236, 0.96);
+}
+
+.feedback-sheet fieldset {
+  border: 0;
+}
+
+.feedback-sheet legend {
+  margin-bottom: 6px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.feedback-options {
+  display: grid;
+  gap: 6px;
+}
+
+.feedback-maturity {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.feedback-tags {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.feedback-options label {
+  min-width: 0;
+}
+
+.feedback-options input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.feedback-options span {
+  min-height: 32px;
+  padding: 5px 7px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: rgba(251, 250, 247, 0.8);
+  color: var(--ink-soft);
+  font-size: 10px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.feedback-options input:checked + span {
+  border-color: var(--peach-deep);
+  background: var(--peach-deep);
+  color: var(--paper-bright);
+}
+
+.feedback-privacy {
+  color: var(--ink-soft);
+  font-size: 9px;
+  line-height: 1.5;
+}
+
+.feedback-submit {
+  width: 100%;
+}
+
+.feedback-status {
+  min-height: 16px;
+  color: var(--leaf);
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.service-links {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.feedback-sheet > .text-action {
+  justify-self: end;
+  padding: 0 4px;
+}
+
+.ending-art {
+  opacity: 0.78;
+}
+
+.ending-copy {
+  position: absolute;
+  right: 22px;
+  bottom: 28px;
+  left: 22px;
+  padding: 22px 0 0 16px;
+  border-top: 1px solid var(--ink);
+  background: rgba(244, 242, 236, 0.93);
+}
+
+.ending-copy h2 {
+  margin: 8px 0 9px;
+  font-size: 27px;
+  font-weight: 500;
+  line-height: 1.35;
+}
+
+.ending-copy > p:not(.chapter-index) {
+  color: var(--ink-soft);
+  font-size: 13px;
+}
+
+.ending-actions {
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 9px;
+}
+
+/* Chapter menu and information sheets */
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 60;
+}
+
+.overlay-backdrop {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: rgba(28, 34, 30, 0.38);
+  cursor: pointer;
+}
+
+.overlay-sheet {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 20px;
+  border-radius: 6px 6px 0 0;
+  background: var(--paper-bright);
+  box-shadow: 0 -12px 30px rgba(41, 51, 45, 0.16);
+}
+
+.chapter-sheet {
+  min-height: 54%;
+}
+
+.overlay-heading {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.overlay-heading h2 {
+  margin-top: 4px;
+  font-size: 22px;
+  font-weight: 500;
+}
+
+.overlay-heading > button {
+  width: 36px;
+  height: 36px;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.chapter-list {
+  margin-top: 18px;
+  border-top: 1px solid var(--line);
+}
+
+.chapter-list button {
+  width: 100%;
+  min-height: 48px;
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  align-items: center;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+}
+
+.chapter-list span {
+  color: var(--peach-deep);
+  font-size: 11px;
+}
+
+.chapter-list b {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.info-sheet {
+  min-height: 64%;
+  display: grid;
+  align-content: start;
+  gap: 14px;
+}
+
+.info-sheet > img {
+  width: 100%;
+  height: 190px;
+  display: block;
+  object-fit: cover;
+  border-radius: 4px;
+  background: var(--paper);
+}
+
+.info-copy {
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.65;
+}
+
+.info-copy p + p {
+  margin-top: 7px;
+}
+
+.info-copy strong {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.info-close-action {
+  width: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .growth-frame,
+  .foundation-frame,
+  .material-route,
+  .ripe-scene,
+  .ripeness-frame {
+    transition-duration: 1ms;
+  }
+
+  .material-route circle {
+    animation: none;
+  }
+}
+
+@media (max-height: 620px) {
+  .global-menu {
+    top: 12px;
+  }
+
+  .growth-images,
+  .foundation-viewport,
+  .daynight-images,
+  .ripeness-viewport {
+    top: 68px;
+  }
+
+  .growth-images {
+    bottom: 226px;
+  }
+
+  .growth-copy {
+    min-height: 226px;
+    padding-top: 9px;
+    gap: 6px;
+  }
+
+  .foundation-viewport {
+    bottom: 222px;
+  }
+
+  .foundation-copy {
+    height: 222px;
+    padding-top: 9px;
+    gap: 7px;
+  }
+
+  .daynight-images {
+    bottom: 210px;
+  }
+
+  .daynight-copy {
+    min-height: 210px;
+    padding-top: 10px;
+    gap: 7px;
+  }
+
+  .ripeness-viewport {
+    bottom: 260px;
+  }
+
+  .ripeness-copy {
+    height: 260px;
+    padding-top: 9px;
+    gap: 6px;
+  }
+
+  .feedback-sheet {
+    padding-top: 12px;
+    gap: 7px;
+  }
+
+  .feedback-options span {
+    min-height: 28px;
+  }
+
+  .info-sheet > img {
+    height: 140px;
   }
 }

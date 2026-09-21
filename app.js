@@ -131,10 +131,12 @@
     growthReleaseCount: 0,
     foundationStep: 0,
     daynightReleaseCount: 0,
-    ripenessState: "firm",
-    aiResult: "turning",
-    capturedImage: "assets/ch5-turning-ripe.webp",
-    capturedObjectUrl: "",
+     ripenessState: "firm",
+    aiResult: "unknown",
+     capturedImage: "assets/ch5-turning-ripe.webp",
+     capturedSource: "demo",
+     captureAssessment: null,
+     capturedObjectUrl: "",
     cameraStream: null,
     routeOverlay: false,
     overlayReturnFocus: null
@@ -255,7 +257,15 @@
     if (name === "daynight") updateDaynight(Number(daynightRange.value));
     if (name === "ripeness") showRipeness(state.ripenessState);
     if (name === "preview") syncCapturedImages();
-    if (name === "ai-result") renderAiResult();
+    if (name === "ai-result") {
+      /* A direct result URL has no preceding analysis step. Keep the
+       * built-in demonstration image and its sample state in sync, while
+       * leaving real camera/gallery captures on the honest unknown path. */
+      if (state.capturedSource === "demo" && state.aiResult === "unknown") {
+        state.aiResult = selectedMockResult();
+      }
+      renderAiResult();
+    }
     if (name === "advice") renderAdvice();
     if (!state.routeOverlay && sceneRoutes[name] && window.location.hash !== sceneRoutes[name]) {
       window.history.replaceState(null, "", sceneRoutes[name]);
@@ -298,10 +308,10 @@
     bee.disabled = false;
     bee.classList.remove("is-dragging", "has-pollen");
     bee.style.left = "25%";
-    bee.style.top = "79%";
+    bee.style.top = "62%";
     pollinationStage.classList.remove("has-pollen", "is-assisted");
-    pollinationDetailImage.src = "assets/ch1-anther-scene.webp";
-    pollinationDetailImage.alt = "桃花花药局部观察图";
+    pollinationDetailImage.src = "assets/ch1-pollen-grain-hybrid.png";
+    pollinationDetailImage.alt = "桃花、花粉与访花蜜蜂观察图";
     pollinationStatus.textContent = "拖动蜜蜂，先经过花药。";
     pollinationDetail.textContent = "花药成熟后裂开，释放花粉。";
   }
@@ -319,10 +329,10 @@
     state.bee.progressed = true;
     bee.classList.add("has-pollen");
     pollinationStage.classList.add("has-pollen");
-    pollinationDetailImage.src = "assets/ch1-pollen-release.webp";
-    pollinationDetailImage.alt = "桃花花粉粒局部观察图";
+    pollinationDetailImage.src = "assets/ch1-pollen-grain-hybrid.png";
+    pollinationDetailImage.alt = "蜜蜂接触花药并携带花粉的观察图";
     pollinationStatus.textContent = "花粉已经附着。";
-    pollinationDetail.textContent = "继续移动到右上方结构图中的柱头。";
+    pollinationDetail.textContent = "沿着提示路径，把花粉带到中央花朵的柱头。";
   }
 
   function completePollination() {
@@ -332,7 +342,7 @@
     state.bee.dragging = false;
     bee.disabled = true;
     bee.classList.remove("is-dragging");
-    pollinationDetailImage.src = "assets/ch1-stigma-section.webp";
+    pollinationDetailImage.src = "assets/ch1-stigma-detail-hybrid.png";
     pollinationDetailImage.alt = "桃花柱头与花柱纵剖面观察图";
     pollinationStatus.textContent = "花粉抵达柱头，授粉完成。";
     pollinationDetail.textContent = "柱头接收花粉，但授粉还不是受精。";
@@ -388,8 +398,8 @@
           ? "沿着提示路径，把花粉带到柱头。"
           : "沿着提示路径，先到花药，再到柱头。";
         pollinationDetail.textContent = state.bee.pollen
-          ? "目标在右上方结构图中绿色花柱的顶端。"
-          : "目标区域已经扩大。";
+          ? "柱头位于中央花朵雌蕊的顶端，目标区域已经扩大。"
+          : "先到花药，花粉附着后再前往柱头。";
       } else {
         pollinationStatus.textContent = state.bee.pollen
           ? "花粉已经附着，继续到柱头。"
@@ -657,10 +667,10 @@
       image: "assets/ch5-abnormal-reference.webp"
     },
     unknown: {
-      label: "暂时无法判断",
-      summary: "照片可能过暗、模糊或桃子没有完整入镜，请重新拍摄并手动检查。",
-      image: "assets/ch5-turning-ripe.webp"
-    }
+       label: "暂时无法判断",
+       summary: "画面中的桃果特征不足或拍摄条件不合适，请重新拍摄，并结合手感、香气和果面检查。",
+       image: "assets/ch5-turning-ripe.webp"
+     }
   };
 
   function stopCamera() {
@@ -681,10 +691,12 @@
     if (state.capturedObjectUrl && state.capturedObjectUrl !== source) {
       window.URL.revokeObjectURL(state.capturedObjectUrl);
     }
-    state.capturedObjectUrl = isObjectUrl ? source : "";
-    state.capturedImage = source;
-    syncCapturedImages();
-    showScene("preview");
+     state.capturedObjectUrl = isObjectUrl ? source : "";
+     state.capturedImage = source;
+     state.capturedSource = isObjectUrl ? "user" : "demo";
+     state.captureAssessment = null;
+     syncCapturedImages();
+     showScene("preview");
   }
 
   function useDemoPhoto() {
@@ -758,13 +770,202 @@
     return aiResultCopy[queryResult] ? queryResult : "turning";
   }
 
+  /*
+   * This prototype does not call a vision model. Keep the local gate
+   * deliberately conservative: a user photo must contain enough warm,
+   * peach-like pixels before we offer a visual reference state. All other
+   * images are surfaced as "暂时无法判断" instead of being labelled as ripe.
+   * A production build should replace this gate and classifier with a
+   * server-side model.
+   */
+  function assessCapturedImage(source) {
+    return new Promise(function (resolve) {
+      var image = new Image();
+      image.onload = function () {
+        var side = 240;
+        var canvas = document.createElement("canvas");
+        canvas.width = side;
+        canvas.height = side;
+        var context = canvas.getContext("2d", { willReadFrequently: true });
+        if (!context) {
+          resolve({ usable: false, reason: "browser" });
+          return;
+        }
+        var ratio = Math.max(image.naturalWidth, image.naturalHeight) / side;
+        var drawWidth = Math.max(1, Math.round(image.naturalWidth / ratio));
+        var drawHeight = Math.max(1, Math.round(image.naturalHeight / ratio));
+        var offsetX = Math.round((side - drawWidth) / 2);
+        var offsetY = Math.round((side - drawHeight) / 2);
+        context.fillStyle = "#f7f2eb";
+        context.fillRect(0, 0, side, side);
+        context.drawImage(image, offsetX, offsetY, drawWidth, drawHeight);
+        var pixels;
+        try {
+          pixels = context.getImageData(0, 0, side, side).data;
+        } catch (error) {
+          resolve({ usable: false, reason: "security" });
+          return;
+        }
+        var sampled = 0;
+        var visible = 0;
+        var warm = 0;
+        var warmCenter = 0;
+        var warmRed = 0;
+        var warmGreen = 0;
+        var warmBlue = 0;
+        var warmSaturation = 0;
+        var colored = 0;
+        var greenPixels = 0;
+        var orangePixels = 0;
+        var redPixels = 0;
+        var neutralPixels = 0;
+        var darkPixels = 0;
+        var warmMinX = side;
+        var warmMinY = side;
+        var warmMaxX = -1;
+        var warmMaxY = -1;
+        for (var y = 0; y < side; y += 2) {
+          for (var x = 0; x < side; x += 2) {
+            sampled += 1;
+            var index = (y * side + x) * 4;
+            var r = pixels[index];
+            var g = pixels[index + 1];
+            var b = pixels[index + 2];
+            var luminance = (r * 299 + g * 587 + b * 114) / 1000;
+            if (luminance < 24 || luminance > 250) continue;
+            visible += 1;
+            var maxChannel = Math.max(r, g, b);
+            var minChannel = Math.min(r, g, b);
+            var saturation = maxChannel ? (maxChannel - minChannel) / maxChannel : 0;
+            if (saturation > 0.12 && luminance < 248) {
+              colored += 1;
+              if (g > r * 0.9 && g > b * 1.25) greenPixels += 1;
+              if (r > g * 1.04 && g > b * 1.08) orangePixels += 1;
+              if (r > g * 1.12 && r > b * 1.2) redPixels += 1;
+              if (saturation < 0.22 && luminance < 220) neutralPixels += 1;
+              if (luminance < 145) darkPixels += 1;
+            }
+            /* Peach skin is a warm, moderately saturated orange/pink range. */
+            var peachLike = r > 92 && g > 42 && b > 18 && r > b * 1.24 && g > b * 1.04 && r - b > 28 && r - g < 145;
+            if (!peachLike) continue;
+            warm += 1;
+            warmRed += r;
+            warmGreen += g;
+            warmBlue += b;
+            warmSaturation += (Math.max(r, g, b) - Math.min(r, g, b)) / Math.max(r, g, b);
+            warmMinX = Math.min(warmMinX, x);
+            warmMinY = Math.min(warmMinY, y);
+            warmMaxX = Math.max(warmMaxX, x);
+            warmMaxY = Math.max(warmMaxY, y);
+            if (x > side * 0.18 && x < side * 0.82 && y > side * 0.12 && y < side * 0.88) warmCenter += 1;
+          }
+        }
+        var warmRatio = visible ? warm / visible : 0;
+        var centerRatio = warm ? warmCenter / warm : 0;
+        var widthRatio = warmMaxX >= 0 ? (warmMaxX - warmMinX) / side : 0;
+        var heightRatio = warmMaxY >= 0 ? (warmMaxY - warmMinY) / side : 0;
+        var subjectBoxArea = warmMaxX >= 0
+          ? Math.max(1, (warmMaxX - warmMinX + 2) * (warmMaxY - warmMinY + 2))
+          : 1;
+        var warmFillRatio = warm ? (warm * 4) / subjectBoxArea : 0;
+        var coloredRatio = sampled ? colored / sampled : 0;
+        var orangeRatio = colored ? orangePixels / colored : 0;
+        var greenRatio = colored ? greenPixels / colored : 0;
+        var redRatio = colored ? redPixels / colored : 0;
+        var neutralRatio = colored ? neutralPixels / colored : 0;
+        var darkRatio = colored ? darkPixels / colored : 0;
+        var closeCrop = heightRatio > 0.94 && warmRatio >= 0.22 && centerRatio >= 0.45;
+        /* Real phone photos often contain several peaches, leaves or a dark
+         * orchard background. Keep the silhouette gate, but allow a broad
+         * warm subject instead of requiring one isolated cutout. */
+        var broadSceneSubject = widthRatio >= 0.34 && heightRatio >= 0.34 &&
+          warmRatio >= 0.12 && centerRatio >= 0.45;
+        var tallSceneSubject = heightRatio > 0.94 && widthRatio >= 0.42 &&
+          warmRatio >= 0.14 && centerRatio >= 0.55;
+        var compactWarmSubject = widthRatio >= 0.18 && heightRatio >= 0.18 &&
+          ((widthRatio <= 0.94 && heightRatio <= 0.94) || closeCrop || tallSceneSubject);
+        /* A single peach fills its warm subject box; a normal product photo
+         * may contain several peaches and therefore has a lower fill ratio. */
+        var singleSubject = warmFillRatio >= 0.62 || closeCrop || broadSceneSubject;
+        var peachColour = coloredRatio >= 0.08 &&
+          (greenRatio >= 0.42 || orangeRatio >= 0.55 || redRatio >= 0.18) &&
+          /* Background shadows are acceptable when the warm subject is
+           * sufficiently large and centred. A yellow/black striped object
+           * (for example the bee cutout) has neither a peach-sized fill nor
+           * the leaf/orchard context expected in a fruit photograph. */
+          (darkRatio < 0.16 || closeCrop || warmFillRatio >= 0.52 ||
+            (warmRatio >= 0.18 && centerRatio >= 0.6 && greenRatio >= 0.08));
+        /* Require colour, a centred subject, and a plausible fruit-sized
+         * silhouette. Images with no warm fruit evidence still fall back to
+         * "暂时无法判断" rather than being labelled ripe. */
+        var peachConfidence = warmRatio >= 0.12 && warmRatio <= 0.96 &&
+          centerRatio >= 0.38 && compactWarmSubject && singleSubject && peachColour;
+        var averageRed = warm ? warmRed / warm : 0;
+        var averageGreen = warm ? warmGreen / warm : 0;
+        var averageBlue = warm ? warmBlue / warm : 0;
+        var averageSaturation = warm ? warmSaturation / warm : 0;
+        var greenRedRatio = averageRed ? averageGreen / averageRed : 0;
+        var suggestedState = "unknown";
+
+        if (peachConfidence) {
+          /*
+           * Yellow-green skin reads earlier in the ripening cycle. As the
+           * skin warms, red dominance and saturation increase. These broad
+           * bands are only a visual teaching aid; they intentionally do not
+           * claim to measure firmness or sweetness.
+           */
+          /* Only very dark, neutral damage-like areas enter the safety branch;
+           * ordinary shadows and the peach crease should remain classifiable. */
+          if (closeCrop && darkRatio >= 0.30 && neutralRatio >= 0.12) suggestedState = "abnormal";
+          else if (greenRedRatio >= 0.98) suggestedState = "firm";
+          else if (greenRedRatio < 0.74 || (averageSaturation >= 0.64 && greenRedRatio < 0.82)) suggestedState = "soft";
+          else if (greenRedRatio < 0.81) suggestedState = "ready";
+          else suggestedState = "turning";
+        }
+
+        resolve({
+          usable: peachConfidence,
+          warmRatio: warmRatio,
+          centerRatio: centerRatio,
+          averageSaturation: averageSaturation,
+          greenRedRatio: greenRedRatio,
+          coloredRatio: coloredRatio,
+          warmFillRatio: warmFillRatio,
+          closeCrop: closeCrop,
+          suggestedState: suggestedState
+        });
+      };
+      image.onerror = function () { resolve({ usable: false, reason: "load" }); };
+      image.src = source;
+    });
+  }
+
+  function classifyCapturedImage() {
+    /* The built-in image is explicitly a demonstration path. */
+    if (state.capturedSource === "demo") return Promise.resolve(selectedMockResult());
+    return assessCapturedImage(state.capturedImage).then(function (assessment) {
+      state.captureAssessment = assessment;
+      if (!assessment.usable) return "unknown";
+      /*
+       * This is a deliberately small, local reference classifier rather than
+       * an AI model. It lets a peach-like user photo demonstrate different
+       * states without pretending that the browser can assess firmness,
+       * aroma, internal damage, or food safety.
+       */
+      return assessment.suggestedState || "unknown";
+    });
+  }
+
   function beginAnalysis() {
     syncCapturedImages();
     showScene("analyzing");
-    schedule(function () {
-      state.aiResult = selectedMockResult();
-      showScene("ai-result");
-    }, reducedMotion ? 120 : 1750);
+    var analysisPromise = classifyCapturedImage();
+    analysisPromise.then(function (result) {
+      schedule(function () {
+        state.aiResult = result;
+        showScene("ai-result");
+      }, reducedMotion ? 120 : 1750);
+    });
   }
 
   function renderAiResult() {
@@ -772,11 +973,21 @@
     var normal = ["firm", "turning", "ready", "soft"].indexOf(state.aiResult) >= 0;
     resultBadge.textContent = result.label;
     resultTitle.textContent = result.label;
-    resultSummary.textContent = result.summary;
+    if (state.aiResult === "unknown" && state.capturedSource === "user" && state.captureAssessment && state.captureAssessment.usable) {
+      resultSummary.textContent = "画面可能包含桃果，但当前静态原型未接入视觉模型，不能可靠判断成熟度。请结合手感、香气和果面检查。";
+    } else if (state.capturedSource === "user" && normal) {
+      resultSummary.textContent = "画面符合桃果特征，系统已根据果面颜色给出成熟阶段参考。请再结合果肩手感、香气和果面检查。";
+    } else {
+      resultSummary.textContent = result.summary;
+    }
     resultImage.src = state.capturedImage || result.image;
-    resultDisclaimer.textContent = normal
-      ? "照片无法判断实际硬度、内部损伤、甜度或气味。"
-      : "图像判断仅作提示，请以人工检查和食用安全原则为准。";
+    resultDisclaimer.textContent = state.capturedSource === "user"
+      ? (normal
+        ? "颜色识别为原型参考，无法判断实际硬度、内部损伤、甜度或气味。"
+        : "当前图像特征不足，无法可靠给出成熟阶段，请重新拍摄或使用人工判断。")
+      : (normal
+        ? "示范状态仅用于说明交互流程，请以人工检查和食用安全原则为准。"
+        : "图像判断仅作提示，请以人工检查和食用安全原则为准。");
     normalResultActions.hidden = !normal;
     specialResultActions.hidden = normal;
     specialResultButton.textContent = state.aiResult === "abnormal" ? "查看异常与售后" : "查看人工判断方法";
@@ -940,6 +1151,13 @@
     state.daynightReleaseCount = 0;
     state.foundationStep = 0;
     state.ripenessState = "firm";
+    state.aiResult = "unknown";
+    if (state.capturedObjectUrl) window.URL.revokeObjectURL(state.capturedObjectUrl);
+    state.capturedObjectUrl = "";
+    state.capturedImage = "assets/ch5-turning-ripe.webp";
+    state.capturedSource = "demo";
+    state.captureAssessment = null;
+    syncCapturedImages();
     feedbackForm.reset();
     feedbackStatus.textContent = "";
     updateGrowth(0);

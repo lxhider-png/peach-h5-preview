@@ -718,12 +718,8 @@ input {
 
 .product-figure img,
 .bloom-frame,
-.flower-scene,
-.pollen-slide img,
 .anatomy-frame,
 .section-frame,
-.growth-continuity,
-.growth-frame,
 .foundation-frame,
 .day-scene,
 .night-scene,
@@ -732,13 +728,153 @@ input {
   object-fit: contain !important;
 }
 
+/* The hybrid plates are portrait artwork intended to occupy the phone canvas.
+   Keep the full scene visible underneath the captions instead of shrinking it
+   into the former thumbnail frame. */
+.flower-scene {
+  object-fit: cover !important;
+  object-position: 68% center !important;
+}
+
+.target-anther {
+  left: 72%;
+  top: 37%;
+}
+
+.target-stigma {
+  left: 60%;
+  top: 57%;
+  opacity: 0.95;
+}
+
+.target b i {
+  margin-right: 3px;
+  color: var(--peach-deep);
+  font-size: 9px;
+  font-style: normal;
+  letter-spacing: 0.04em;
+}
+
+.stigma-inset {
+  top: 100px;
+  right: auto;
+  bottom: auto;
+  left: 14px;
+  width: 116px;
+  padding: 5px;
+}
+
+.stigma-inset img {
+  height: 168px;
+  object-fit: cover;
+  object-position: center 43%;
+}
+
+.stigma-inset figcaption {
+  line-height: 1.35;
+}
+
+.stigma-inset figcaption b {
+  color: var(--leaf);
+  font-weight: 600;
+}
+
+.bee {
+  width: 94px;
+  height: 94px;
+}
+
+.pollen-slide {
+  inset: 0;
+}
+
+.pollen-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover !important;
+  object-position: center center;
+  transform: scale(1.12);
+  transform-origin: center center;
+}
+
+.pollen-slide[data-pollen-slide="0"] img {
+  object-position: 60% center;
+  transform: scale(1.16);
+}
+
+.pollen-slide[data-pollen-slide="1"] img {
+  /* The macro pollen plate has generous white margins in its source canvas. */
+  transform: scale(1.55);
+}
+
+.pollen-slide[data-pollen-slide="2"] img {
+  object-position: 58% center;
+  transform: scale(1.16);
+}
+
+.pollen-slide[data-pollen-slide="3"] img {
+  transform: scale(1.22);
+}
+
+.pollen-slide[data-pollen-slide="4"] img {
+  transform: scale(1.08);
+}
+
+.pollen-slide figcaption {
+  z-index: 6;
+  right: 16px;
+  bottom: 98px;
+  left: 16px;
+  min-height: 84px;
+  padding-top: 10px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.91);
+}
+
+.observer-controls {
+  z-index: 8;
+}
+
+.complete-art {
+  object-fit: cover !important;
+  object-position: center center;
+  opacity: 0.86;
+}
+
+.growth-continuity,
+.growth-frame {
+  object-fit: cover !important;
+  object-position: center center;
+}
+
 .growth-continuity {
-  opacity: 0.08;
+  opacity: 0.15;
 }
 
 .growth-frame.is-active {
   opacity: 1;
 }
+
+/* Keep the draggable bee and the evidence image clear of the instruction band. */
+.pollination-stage .bee {
+  top: 62%;
+  width: 100px;
+  height: 100px;
+}
+
+.pollination-stage .pollination-copy {
+  grid-template-columns: 92px minmax(0, 1fr);
+  min-height: 96px;
+}
+
+.pollination-stage .pollination-copy img {
+  width: 92px;
+  height: 78px;
+  object-fit: cover;
+  object-position: center center;
+}
+
 
 @keyframes v5-cover-enter {
   from { opacity: 0; transform: scale(1.015); }

@@ -634,7 +634,7 @@
       label: "偏硬",
       summary: "果面仍接近偏硬阶段，建议结合果肩手感与香气再次确认。",
       image: "assets/ch5-firm.webp",
-      adviceImage: "assets/ch5-storage-room.webp",
+      adviceImage: "assets/ch5-storage-room.webp?v=5.12",
       adviceTitle: "阴凉通风，继续观察",
       advice: "单层摆放，避免挤压和阳光直射。每天轻按果肩并闻气味，达到喜欢的软硬度后食用。"
     },
@@ -642,7 +642,7 @@
       label: "正在转熟",
       summary: "果面状态接近转熟阶段，建议结合果肩手感与香气再次确认。",
       image: "assets/ch5-turning-ripe.webp",
-      adviceImage: "assets/ch5-storage-room.webp",
+      adviceImage: "assets/ch5-storage-room.webp?v=5.12",
       adviceTitle: "阴凉通风，近期食用",
       advice: "单层摆放，避免挤压和阳光直射。每天轻按果肩并闻气味，达到喜欢的软硬度后食用。"
     },
@@ -650,7 +650,7 @@
       label: "适合食用",
       summary: "照片特征接近适食阶段，请结合正常香气与果肩弹性确认。",
       image: "assets/ch5-ready.webp",
-      adviceImage: "assets/ch5-storage-cold.webp",
+      adviceImage: "assets/ch5-storage-cold.webp?v=5.12",
       adviceTitle: "建议尽快食用",
       advice: "如果暂不食用，可按包装说明短时冷藏并避免挤压。食用前取出，再检查果面、气味和手感。"
     },
@@ -658,7 +658,7 @@
       label: "偏软",
       summary: "果面特征接近偏软阶段，需要结合是否有异味、渗液或霉变判断。",
       image: "assets/ch5-soft.webp",
-      adviceImage: "assets/ch5-storage-cold.webp",
+      adviceImage: "assets/ch5-storage-cold.webp?v=5.12",
       adviceTitle: "尽快食用并检查异常",
       advice: "避免继续常温久放。食用前检查是否有异常异味、渗液或霉变；发现异常时请勿食用。"
     },
@@ -1022,7 +1022,7 @@
     adviceStateName.textContent = result.label;
     adviceTitle.textContent = result.adviceTitle || "结合手感与气味再次确认";
     adviceDetail.textContent = result.advice || "请重新检查果肩手感、正常香气以及是否有霉变、异味或异常渗液。";
-    adviceImage.src = result.adviceImage || "assets/ch5-storage-room.webp";
+    adviceImage.src = result.adviceImage || "assets/ch5-storage-room.webp?v=5.12";
   }
 
   var ripenessCopy = {
@@ -1063,14 +1063,14 @@
     storageRoom: {
       eyebrow: "储存提示",
       title: "准备近期食用",
-      image: "assets/ch5-storage-room.webp",
+      image: "assets/ch5-storage-room.webp?v=5.12",
       alt: "阴凉通风处储存桃果",
       copy: "<p><strong>阴凉通风</strong></p><p>避免阳光直射和相互挤压，继续观察果面、果肩手感和气味。</p>"
     },
     storageCold: {
       eyebrow: "储存提示",
       title: "需要延缓成熟",
-      image: "assets/ch5-storage-cold.webp",
+      image: "assets/ch5-storage-cold.webp?v=5.12",
       alt: "冷藏保存桃果",
       copy: "<p><strong>按包装说明冷藏</strong></p><p>食用前取出，再次观察果面、手感和气味。不要依据单一红晕判断成熟。</p>"
     },

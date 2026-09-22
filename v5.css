@@ -1124,7 +1124,7 @@ input {
   }
 }
 
-/* v5.9 visual review fixes
+/* v5.12 visual review fixes
    Keep the source artwork intact while giving the most important subjects
    enough room in the phone layout. */
 
@@ -1143,8 +1143,8 @@ input {
 }
 
 .scene-advice .advice-visual img {
-  transform: scale(1.15);
-  transform-origin: center center;
+  object-fit: contain;
+  transform: none;
 }
 
 /* 3. Make the archive fields readable at the reference phone width. */
@@ -1188,9 +1188,7 @@ input {
     height: 29%;
   }
 
-  .scene-advice .advice-visual img {
-    transform: scale(1.05);
-  }
+  .scene-advice .advice-visual img { transform: none; }
 
   .scene-advice .advice-copy {
     padding-bottom: 44px;

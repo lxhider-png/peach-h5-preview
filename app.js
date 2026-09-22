@@ -240,6 +240,7 @@
       previousScene.classList.add("is-leaving");
       schedule(function () { previousScene.classList.remove("is-leaving"); }, reducedMotion ? 1 : 360);
     }
+    primaryNavigation.hidden = focusedCareFlow;
     primaryNavigation.setAttribute("aria-hidden", focusedCareFlow ? "true" : "false");
     primaryNavigationButtons.forEach(function (button) {
       var active = button.dataset.module === sceneModules[name];
@@ -307,11 +308,8 @@
     });
     bee.disabled = false;
     bee.classList.remove("is-dragging", "has-pollen");
-    /* Keep the starting point clear of the evidence card in landscape while
-       preserving the lower-left starting point on a phone. */
-    var landscape = window.matchMedia("(orientation: landscape) and (min-width: 700px)").matches;
-    bee.style.left = landscape ? "47%" : "25%";
-    bee.style.top = landscape ? "72%" : "62%";
+    bee.style.left = "18%";
+    bee.style.top = "52%";
     pollinationStage.classList.remove("has-pollen", "is-assisted");
     pollinationDetailImage.src = "assets/ch1-pollen-grain-hybrid.webp";
     pollinationDetailImage.alt = "桃花、花粉与访花蜜蜂观察图";
@@ -707,6 +705,9 @@
   }
 
   function pickPhoto() {
+    /* The gallery path must not inherit a mobile `capture` hint. Otherwise
+       iOS/Android may open the camera instead of the photo library. */
+    photoInput.removeAttribute("capture");
     photoInput.value = "";
     photoInput.click();
   }

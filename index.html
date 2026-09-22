@@ -8,7 +8,7 @@
   <title>一枝鲜桃｜食用保存、鲜桃档案与品质科普</title>
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="minimal.css">
-  <link rel="stylesheet" href="v5.css?v=5.6">
+  <link rel="stylesheet" href="v5.css?v=5.11">
 </head>
 <body>
   <main class="experience" id="experience">
@@ -89,7 +89,7 @@
         <img class="flower-scene" src="assets/ch1-flower-scene-hybrid1.webp" alt="桃花枝头授粉场景，花药、花柱与柱头均可见">
 
         <svg class="assist-line" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-          <path d="M25 79 C42 66 59 50 72 37 C67 43 63 51 60 57"></path>
+          <path d="M18 52 C28 51 36 55 43 58 C41 60 38 62 36 64"></path>
         </svg>
 
         <div class="target target-anther" id="target-anther" aria-label="第一步：花药目标">
@@ -214,11 +214,6 @@
         <div class="scientific-label label-ovule">胚珠</div>
         <div class="scientific-label label-zygote">受精卵</div>
 
-        <button class="germination-action" id="fertilization-button" type="button">
-          <img src="assets/ch1-pollen-grain-hybrid.webp" alt="桃花、花粉与访花蜜蜂观察图">
-          <span id="fertilization-button-label">轻触花粉，观察萌发</span>
-        </button>
-
         <ol class="process-progress" aria-label="受精过程">
           <li data-process-step="1"><i></i><span>萌发</span></li>
           <li data-process-step="2"><i></i><span>花柱</span></li>
@@ -231,6 +226,10 @@
       <div class="process-copy" aria-live="polite">
         <p id="fertilization-status">授粉完成，但受精还没有发生。</p>
         <span id="fertilization-detail">轻触柱头上的花粉，继续观察。</span>
+        <button class="germination-action" id="fertilization-button" type="button">
+          <img src="assets/ch1-pollen-grain-hybrid.webp" alt="桃花、花粉与访花蜜蜂观察图">
+          <span id="fertilization-button-label">轻触花粉，观察萌发</span>
+        </button>
       </div>
     </section>
 
@@ -364,7 +363,7 @@
         <button class="primary-action" id="open-camera-button" type="button">打开相机</button>
         <button class="secondary-action" id="choose-photo-button" type="button">从相册选择</button>
         <button class="text-action" id="use-demo-button" type="button">使用示范照片体验</button>
-        <input id="photo-input" type="file" accept="image/*" capture="environment" hidden>
+        <input id="photo-input" type="file" accept="image/*" hidden>
       </div>
     </section>
 
@@ -552,7 +551,7 @@
       </div>
     </section>
 
-    <nav class="primary-navigation" id="primary-navigation" aria-label="一级导航">
+    <nav class="primary-navigation" id="primary-navigation" aria-label="一级导航" hidden>
       <button type="button" data-primary-jump="care-home" data-module="care">
         <span>食用与保存</span>
       </button>
@@ -600,6 +599,6 @@
     </div>
   </main>
 
-  <script src="app.js"></script>
+  <script src="app.js?v=5.11"></script>
 </body>
 </html>

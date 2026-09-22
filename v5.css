@@ -943,10 +943,9 @@ input {
 }
 
 /* v5.4 responsive artwork system
-   Portrait phones stay at 9:16. Wider screens use a 16:9 stage so the same
-   H5 can be previewed on a desktop or shown in landscape without stretching
-   the botanical plates. Transparent PNGs are kept complete inside their
-   frames; the white surface comes from the stage, not from the image files. */
+   The H5 is a portrait-first mobile experience. Keep the stage at 9:16 on
+   phones and desktop previews alike. Transparent artwork stays complete
+   inside its frame; the white surface comes from the stage, not the image. */
 .scene-heading h1 {
   font-size: 24px;
 }
@@ -1015,164 +1014,190 @@ input {
   font-size: 12px;
 }
 
-/* Landscape presentation: a 16:9 canvas with a calm split composition. */
-@media (orientation: landscape) and (min-width: 700px) {
-  .experience {
-    width: min(100vw, calc(100dvh * 16 / 9));
-    height: min(100dvh, calc(100vw * 9 / 16));
-    aspect-ratio: 16 / 9;
+/* v5.8 mobile portrait fixes */
+.primary-navigation[hidden],
+.experience:not(.has-primary-nav) .primary-navigation {
+  display: none !important;
+}
+
+.experience:not(.has-primary-nav) .scene {
+  bottom: 0;
+}
+
+/* The markers follow the visible structures in the new hybrid flower plate.
+   Both were previously positioned too far to the right. */
+.pollination-stage .target-anther {
+  left: 43%;
+  top: 58%;
+}
+
+.pollination-stage .target-stigma {
+  left: 36%;
+  top: 64%;
+}
+
+/* Keep each fertilization image and its command in separate regions. */
+.fertilization-stage {
+  bottom: 158px;
+}
+
+.process-copy {
+  bottom: 10px;
+  min-height: 138px;
+  padding: 10px 16px 12px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-content: start;
+  gap: 3px;
+}
+
+.process-copy .germination-action {
+  position: static;
+  width: 100%;
+  max-width: none;
+  min-height: 44px;
+  margin-top: 7px;
+  padding: 5px 12px;
+  justify-content: center;
+  transform: none;
+  border-color: var(--v5-peach);
+  background: var(--v5-peach);
+  color: #ffffff;
+  white-space: normal;
+  text-align: center;
+}
+
+.process-copy .germination-action img {
+  width: 30px;
+  height: 30px;
+  flex: 0 0 auto;
+  object-fit: contain;
+  background: #ffffff;
+}
+
+.process-copy .germination-action span {
+  margin: 0;
+  color: #ffffff;
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+/* Give the quality summary illustration more of the phone canvas, then enlarge
+   the transparent plate without stretching its aspect ratio. */
+.foundation-viewport {
+  bottom: 206px;
+}
+
+.foundation-copy {
+  height: 206px;
+  padding-top: 11px;
+  gap: 8px;
+}
+
+.foundation-frame,
+.foundation-frame.is-active {
+  transform: scale(1.42);
+  transform-origin: center 50%;
+}
+
+@media (max-height: 690px) {
+  .fertilization-stage {
+    bottom: 150px;
   }
 
-  .experience.has-primary-nav .scene {
-    bottom: 72px;
+  .process-copy {
+    min-height: 132px;
+    padding-top: 8px;
   }
 
-  .scene-heading {
-    height: 94px;
-    padding: 20px 28px 12px;
-    grid-template-columns: 44px minmax(0, 1fr);
-    gap: 12px;
+  .process-copy .germination-action {
+    min-height: 40px;
+    margin-top: 5px;
   }
 
-  .scene-heading h1 {
-    margin-top: 4px;
-    font-size: 29px;
+  .foundation-viewport {
+    bottom: 196px;
   }
 
-  .chapter-index {
-    font-size: 13px;
-  }
-
-  .back-button {
-    width: 44px;
-    height: 44px;
-    font-size: 28px;
-  }
-
-  .global-menu {
-    top: 24px;
-    right: 24px;
-    width: 44px;
-    height: 44px;
-    font-size: 27px;
-  }
-
-  .primary-navigation {
-    height: 72px;
-    padding: 0 24px 8px;
-  }
-
-  .primary-navigation button {
-    min-height: 64px;
-  }
-
-  .primary-navigation button span {
-    font-size: 16px;
-  }
-
-  .primary-navigation button small {
-    font-size: 11px;
-  }
-
-  /* The source artwork is a portrait transparent plate. In landscape it
-     occupies the right visual field while the interaction copy sits below. */
-  .pollination-stage .flower-scene {
-    left: 30%;
-    width: 70%;
-    object-position: center center !important;
-    transform: scale(0.98);
-    transform-origin: 72% 48%;
-  }
-
-  .pollination-stage .stigma-inset {
-    top: 112px;
-    right: auto;
-    left: 28px;
-    width: 184px;
-    padding: 8px;
-  }
-
-  .pollination-stage .stigma-inset img {
+  .foundation-copy {
     height: 196px;
   }
+}
 
-  .pollination-stage .target {
-    width: 84px;
-    height: 84px;
+/* v5.9 visual review fixes
+   Keep the source artwork intact while giving the most important subjects
+   enough room in the phone layout. */
+
+/* 1. The care-home peach has generous transparent margins in its source
+   plate. Scale the plate inside the existing hero instead of cropping the
+   scene with object-fit: cover. */
+.scene-care-home .care-hero img {
+  transform: scale(1.48);
+  transform-origin: center 54%;
+}
+
+/* 2. The advice image should carry more of the page and leave less unused
+   space before the copy below it. */
+.scene-advice .advice-visual {
+  height: 42%;
+}
+
+.scene-advice .advice-visual img {
+  transform: scale(1.15);
+  transform-origin: center center;
+}
+
+/* 3. Make the archive fields readable at the reference phone width. */
+.scene-product .product-record dl div {
+  min-height: 34px;
+  font-size: 15px;
+}
+
+/* 4. The flower plate's first target belongs to the central flower, not the
+   lower exposed anthers. The inset explanation also needs a legible caption. */
+.pollination-stage .target-anther {
+  left: 64%;
+  top: 36%;
+}
+
+.pollination-stage .stigma-inset {
+  width: 136px;
+}
+
+.pollination-stage .stigma-inset figcaption {
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+/* 5. Keep the growth specimen label above the photographic plates. */
+.growth-images .specimen-mark {
+  z-index: 4;
+  padding: 7px 10px;
+  background: rgba(251, 250, 247, 0.96);
+  font-size: 11px;
+}
+
+@media (max-height: 690px) {
+  /* Preserve the compact layout on short phones while keeping the review
+     fixes active on the 9:16 reference viewport. */
+  .scene-care-home .care-hero img {
+    transform: scale(1.28);
   }
 
-  .pollination-stage .target-anther {
-    left: 72%;
-    top: 36%;
+  .scene-advice .advice-visual {
+    height: 29%;
   }
 
-  .pollination-stage .target-stigma {
-    left: 65%;
-    top: 63%;
+  .scene-advice .advice-visual img {
+    transform: scale(1.05);
   }
 
-  .pollination-stage .target b {
-    padding: 6px 9px;
+  .scene-advice .advice-copy {
+    padding-bottom: 44px;
+  }
+
+  .scene-product .product-record dl div {
+    min-height: 30px;
     font-size: 14px;
-  }
-
-  .pollination-stage .bee {
-    left: 47%;
-    top: 72%;
-    width: 126px;
-    height: 126px;
-  }
-
-  .pollination-stage .pollination-copy {
-    right: auto;
-    bottom: 24px;
-    left: 28px;
-    width: 30%;
-    min-height: 128px;
-    padding: 16px;
-    grid-template-columns: 112px minmax(0, 1fr);
-    gap: 14px;
-  }
-
-  .pollination-stage .pollination-copy img {
-    width: 112px;
-    height: 92px;
-  }
-
-  .pollination-stage .pollination-copy p {
-    font-size: 18px;
-  }
-
-  .pollination-stage .pollination-copy span {
-    font-size: 14px;
-  }
-
-  .pollen-slide img,
-  .anatomy-frame,
-  .section-frame,
-  .foundation-frame,
-  .day-scene,
-  .night-scene,
-  .ripe-scene,
-  .complete-art,
-  .ending-art {
-    object-fit: contain !important;
-  }
-
-  .pollen-slide figcaption {
-    right: 28px;
-    bottom: 18px;
-    left: 28px;
-    min-height: 116px;
-    padding: 16px 18px;
-  }
-
-  .pollen-slide figcaption b {
-    font-size: 17px;
-  }
-
-  .pollen-slide figcaption span {
-    font-size: 15px;
-    line-height: 1.55;
   }
 }

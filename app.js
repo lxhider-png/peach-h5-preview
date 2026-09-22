@@ -307,8 +307,11 @@
     });
     bee.disabled = false;
     bee.classList.remove("is-dragging", "has-pollen");
-    bee.style.left = "25%";
-    bee.style.top = "62%";
+    /* Keep the starting point clear of the evidence card in landscape while
+       preserving the lower-left starting point on a phone. */
+    var landscape = window.matchMedia("(orientation: landscape) and (min-width: 700px)").matches;
+    bee.style.left = landscape ? "47%" : "25%";
+    bee.style.top = landscape ? "72%" : "62%";
     pollinationStage.classList.remove("has-pollen", "is-assisted");
     pollinationDetailImage.src = "assets/ch1-pollen-grain-hybrid.png";
     pollinationDetailImage.alt = "桃花、花粉与访花蜜蜂观察图";

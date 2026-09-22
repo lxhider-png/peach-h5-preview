@@ -941,3 +941,238 @@ input {
     animation: none;
   }
 }
+
+/* v5.4 responsive artwork system
+   Portrait phones stay at 9:16. Wider screens use a 16:9 stage so the same
+   H5 can be previewed on a desktop or shown in landscape without stretching
+   the botanical plates. Transparent PNGs are kept complete inside their
+   frames; the white surface comes from the stage, not from the image files. */
+.scene-heading h1 {
+  font-size: 24px;
+}
+
+.chapter-index {
+  font-size: 12px;
+}
+
+.primary-navigation button span {
+  font-size: 14px;
+}
+
+.primary-navigation button small {
+  font-size: 10px;
+}
+
+.flower-scene,
+.bloom-frame,
+.pollen-slide img,
+.anatomy-frame,
+.section-frame,
+.foundation-frame,
+.day-scene,
+.night-scene,
+.ripe-scene,
+.complete-art,
+.ending-art {
+  object-fit: contain !important;
+  object-position: center center !important;
+}
+
+.flower-scene {
+  /* The source plate already has a 9:16 canvas. Keep its outermost petals
+     visible instead of enlarging it past the transparent bounds. */
+  transform: scale(0.94);
+  transform-origin: center center;
+}
+
+/* The growth plates are a continuous wide story. Their focus stays in the
+   middle of the plate so the stage remains legible at both ratios. */
+.growth-continuity,
+.growth-frame {
+  object-fit: cover !important;
+  object-position: center center !important;
+}
+
+.stigma-inset img,
+.pollination-copy img {
+  object-fit: contain !important;
+  background: #ffffff;
+}
+
+.pollination-copy p,
+.process-copy p {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.pollination-copy span,
+.process-copy span {
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.target b {
+  font-size: 12px;
+}
+
+/* Landscape presentation: a 16:9 canvas with a calm split composition. */
+@media (orientation: landscape) and (min-width: 700px) {
+  .experience {
+    width: min(100vw, calc(100dvh * 16 / 9));
+    height: min(100dvh, calc(100vw * 9 / 16));
+    aspect-ratio: 16 / 9;
+  }
+
+  .experience.has-primary-nav .scene {
+    bottom: 72px;
+  }
+
+  .scene-heading {
+    height: 94px;
+    padding: 20px 28px 12px;
+    grid-template-columns: 44px minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .scene-heading h1 {
+    margin-top: 4px;
+    font-size: 29px;
+  }
+
+  .chapter-index {
+    font-size: 13px;
+  }
+
+  .back-button {
+    width: 44px;
+    height: 44px;
+    font-size: 28px;
+  }
+
+  .global-menu {
+    top: 24px;
+    right: 24px;
+    width: 44px;
+    height: 44px;
+    font-size: 27px;
+  }
+
+  .primary-navigation {
+    height: 72px;
+    padding: 0 24px 8px;
+  }
+
+  .primary-navigation button {
+    min-height: 64px;
+  }
+
+  .primary-navigation button span {
+    font-size: 16px;
+  }
+
+  .primary-navigation button small {
+    font-size: 11px;
+  }
+
+  /* The source artwork is a portrait transparent plate. In landscape it
+     occupies the right visual field while the interaction copy sits below. */
+  .pollination-stage .flower-scene {
+    left: 30%;
+    width: 70%;
+    object-position: center center !important;
+    transform: scale(0.98);
+    transform-origin: 72% 48%;
+  }
+
+  .pollination-stage .stigma-inset {
+    top: 112px;
+    right: auto;
+    left: 28px;
+    width: 184px;
+    padding: 8px;
+  }
+
+  .pollination-stage .stigma-inset img {
+    height: 196px;
+  }
+
+  .pollination-stage .target {
+    width: 84px;
+    height: 84px;
+  }
+
+  .pollination-stage .target-anther {
+    left: 72%;
+    top: 36%;
+  }
+
+  .pollination-stage .target-stigma {
+    left: 65%;
+    top: 63%;
+  }
+
+  .pollination-stage .target b {
+    padding: 6px 9px;
+    font-size: 14px;
+  }
+
+  .pollination-stage .bee {
+    left: 47%;
+    top: 72%;
+    width: 126px;
+    height: 126px;
+  }
+
+  .pollination-stage .pollination-copy {
+    right: auto;
+    bottom: 24px;
+    left: 28px;
+    width: 30%;
+    min-height: 128px;
+    padding: 16px;
+    grid-template-columns: 112px minmax(0, 1fr);
+    gap: 14px;
+  }
+
+  .pollination-stage .pollination-copy img {
+    width: 112px;
+    height: 92px;
+  }
+
+  .pollination-stage .pollination-copy p {
+    font-size: 18px;
+  }
+
+  .pollination-stage .pollination-copy span {
+    font-size: 14px;
+  }
+
+  .pollen-slide img,
+  .anatomy-frame,
+  .section-frame,
+  .foundation-frame,
+  .day-scene,
+  .night-scene,
+  .ripe-scene,
+  .complete-art,
+  .ending-art {
+    object-fit: contain !important;
+  }
+
+  .pollen-slide figcaption {
+    right: 28px;
+    bottom: 18px;
+    left: 28px;
+    min-height: 116px;
+    padding: 16px 18px;
+  }
+
+  .pollen-slide figcaption b {
+    font-size: 17px;
+  }
+
+  .pollen-slide figcaption span {
+    font-size: 15px;
+    line-height: 1.55;
+  }
+}

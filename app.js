@@ -313,7 +313,7 @@
     bee.style.left = landscape ? "47%" : "25%";
     bee.style.top = landscape ? "72%" : "62%";
     pollinationStage.classList.remove("has-pollen", "is-assisted");
-    pollinationDetailImage.src = "assets/ch1-pollen-grain-hybrid.png";
+    pollinationDetailImage.src = "assets/ch1-pollen-grain-hybrid.webp";
     pollinationDetailImage.alt = "桃花、花粉与访花蜜蜂观察图";
     pollinationStatus.textContent = "拖动蜜蜂，先经过花药。";
     pollinationDetail.textContent = "花药成熟后裂开，释放花粉。";
@@ -332,7 +332,7 @@
     state.bee.progressed = true;
     bee.classList.add("has-pollen");
     pollinationStage.classList.add("has-pollen");
-    pollinationDetailImage.src = "assets/ch1-pollen-grain-hybrid.png";
+    pollinationDetailImage.src = "assets/ch1-pollen-grain-hybrid.webp";
     pollinationDetailImage.alt = "蜜蜂接触花药并携带花粉的观察图";
     pollinationStatus.textContent = "花粉已经附着。";
     pollinationDetail.textContent = "沿着提示路径，把花粉带到中央花朵的柱头。";
@@ -345,7 +345,7 @@
     state.bee.dragging = false;
     bee.disabled = true;
     bee.classList.remove("is-dragging");
-    pollinationDetailImage.src = "assets/ch1-stigma-detail-hybrid.png";
+    pollinationDetailImage.src = "assets/ch1-stigma-detail-hybrid.webp";
     pollinationDetailImage.alt = "桃花柱头与花柱纵剖面观察图";
     pollinationStatus.textContent = "花粉抵达柱头，授粉完成。";
     pollinationDetail.textContent = "柱头接收花粉，但授粉还不是受精。";

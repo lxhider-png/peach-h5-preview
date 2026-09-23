@@ -822,12 +822,22 @@
         var greenPixels = 0;
         var orangePixels = 0;
         var redPixels = 0;
+        var brightYellowPixels = 0;
+        var pinkHighlightPixels = 0;
         var neutralPixels = 0;
         var darkPixels = 0;
         var warmMinX = side;
         var warmMinY = side;
         var warmMaxX = -1;
         var warmMaxY = -1;
+        var yellowMinX = side;
+        var yellowMinY = side;
+        var yellowMaxX = -1;
+        var yellowMaxY = -1;
+        var centerColoredPixels = 0;
+        var centerRed = 0;
+        var centerGreen = 0;
+        var centerBlushPixels = 0;
         for (var y = 0; y < side; y += 2) {
           for (var x = 0; x < side; x += 2) {
             sampled += 1;
@@ -843,9 +853,29 @@
             var saturation = maxChannel ? (maxChannel - minChannel) / maxChannel : 0;
             if (saturation > 0.12 && luminance < 248) {
               colored += 1;
+              if (x >= side * 0.25 && x <= side * 0.75 &&
+                  y >= side * 0.25 && y <= side * 0.75) {
+                centerColoredPixels += 1;
+                centerRed += r;
+                centerGreen += g;
+                if (r > g * 1.1 && r > b * 1.2) centerBlushPixels += 1;
+              }
               if (g > r * 0.9 && g > b * 1.25) greenPixels += 1;
               if (r > g * 1.04 && g > b * 1.08) orangePixels += 1;
               if (r > g * 1.12 && r > b * 1.2) redPixels += 1;
+              var brightYellowLike = luminance > 145 && r > 118 && g > 98 && b < 145 &&
+                Math.abs(r - g) < 66 && r > b * 1.22 && g > b * 1.12 && saturation > 0.2;
+              if (brightYellowLike) {
+                brightYellowPixels += 1;
+                yellowMinX = Math.min(yellowMinX, x);
+                yellowMinY = Math.min(yellowMinY, y);
+                yellowMaxX = Math.max(yellowMaxX, x);
+                yellowMaxY = Math.max(yellowMaxY, y);
+              }
+              if (r > 155 && luminance > 145 && b > 58 && r > g * 1.08 &&
+                  r > b * 1.22 && r - g > 18) {
+                pinkHighlightPixels += 1;
+              }
               if (saturation < 0.22 && luminance < 220) neutralPixels += 1;
               if (luminance < 145) darkPixels += 1;
             }
@@ -878,6 +908,18 @@
         var redRatio = colored ? redPixels / colored : 0;
         var neutralRatio = colored ? neutralPixels / colored : 0;
         var darkRatio = colored ? darkPixels / colored : 0;
+        var averageRed = warm ? warmRed / warm : 0;
+        var averageGreen = warm ? warmGreen / warm : 0;
+        var averageBlue = warm ? warmBlue / warm : 0;
+        var averageSaturation = warm ? warmSaturation / warm : 0;
+        var greenRedRatio = averageRed ? averageGreen / averageRed : 0;
+        var brightYellowRatio = sampled ? brightYellowPixels / sampled : 0;
+        var yellowWidthRatio = yellowMaxX >= 0 ? (yellowMaxX - yellowMinX + 2) / side : 0;
+        var yellowHeightRatio = yellowMaxY >= 0 ? (yellowMaxY - yellowMinY + 2) / side : 0;
+        var yellowAspectRatio = yellowHeightRatio ? yellowWidthRatio / yellowHeightRatio : 0;
+        var pinkToYellowRatio = brightYellowPixels ? pinkHighlightPixels / brightYellowPixels : 0;
+        var centerGreenRedRatio = centerRed ? centerGreen / centerRed : 0;
+        var centerBlushRatio = centerColoredPixels ? centerBlushPixels / centerColoredPixels : 0;
         var closeCrop = heightRatio > 0.94 && warmRatio >= 0.22 && centerRatio >= 0.45;
         /* Real phone photos often contain several peaches, leaves or a dark
          * orchard background. Keep the silhouette gate, but allow a broad
@@ -899,16 +941,27 @@
            * the leaf/orchard context expected in a fruit photograph. */
           (darkRatio < 0.16 || closeCrop || warmFillRatio >= 0.52 ||
             (warmRatio >= 0.18 && centerRatio >= 0.6 && greenRatio >= 0.08));
+        /* A large, nearly circular yellow-green subject without the blush
+         * transition typical of this flat-peach cultivar is more likely to
+         * be citrus. Fail closed instead of assigning it a ripeness state. */
+        var citrusLike = brightYellowRatio >= 0.22 &&
+          yellowWidthRatio >= 0.62 && yellowHeightRatio >= 0.62 &&
+          yellowAspectRatio >= 0.88 && yellowAspectRatio <= 1.12 &&
+          greenRedRatio >= 0.76 && greenRedRatio < 0.97 &&
+          pinkToYellowRatio < 0.55 && averageSaturation < 0.62;
+        /* A valid result also needs positive peach evidence in the middle of
+         * the frame. Firm yellow-green peaches keep a green/red ratio near
+         * one; later stages develop the cultivar's broad pink-red blush. */
+        var firmPeachTone = centerGreenRedRatio >= 0.97;
+        var blushPeachTone = centerGreenRedRatio <= 0.86 && centerBlushRatio >= 0.65;
+        var peachTone = firmPeachTone || blushPeachTone;
         /* Require colour, a centred subject, and a plausible fruit-sized
          * silhouette. Images with no warm fruit evidence still fall back to
          * "暂时无法判断" rather than being labelled ripe. */
-        var peachConfidence = warmRatio >= 0.12 && warmRatio <= 0.96 &&
+        var baseFruitCandidate = warmRatio >= 0.12 && warmRatio <= 0.96 &&
           centerRatio >= 0.38 && compactWarmSubject && singleSubject && peachColour;
-        var averageRed = warm ? warmRed / warm : 0;
-        var averageGreen = warm ? warmGreen / warm : 0;
-        var averageBlue = warm ? warmBlue / warm : 0;
-        var averageSaturation = warm ? warmSaturation / warm : 0;
-        var greenRedRatio = averageRed ? averageGreen / averageRed : 0;
+        var peachConfidence = baseFruitCandidate && peachTone && !citrusLike;
+        var objectMismatch = baseFruitCandidate && (!peachTone || citrusLike);
         var suggestedState = "unknown";
 
         if (peachConfidence) {
@@ -921,9 +974,9 @@
           /* Only very dark, neutral damage-like areas enter the safety branch;
            * ordinary shadows and the peach crease should remain classifiable. */
           if (closeCrop && darkRatio >= 0.30 && neutralRatio >= 0.12) suggestedState = "abnormal";
-          else if (greenRedRatio >= 0.98) suggestedState = "firm";
-          else if (greenRedRatio < 0.74 || (averageSaturation >= 0.64 && greenRedRatio < 0.82)) suggestedState = "soft";
-          else if (greenRedRatio < 0.81) suggestedState = "ready";
+          else if (centerGreenRedRatio >= 0.97) suggestedState = "firm";
+          else if (centerGreenRedRatio < 0.74) suggestedState = "soft";
+          else if (centerGreenRedRatio < 0.795) suggestedState = "ready";
           else suggestedState = "turning";
         }
 
@@ -936,6 +989,11 @@
           coloredRatio: coloredRatio,
           warmFillRatio: warmFillRatio,
           closeCrop: closeCrop,
+          centerGreenRedRatio: centerGreenRedRatio,
+          centerBlushRatio: centerBlushRatio,
+          citrusLike: citrusLike,
+          objectMismatch: objectMismatch,
+          reason: objectMismatch ? "not-peach" : (peachConfidence ? "peach-like" : "insufficient"),
           suggestedState: suggestedState
         });
       };
@@ -975,9 +1033,14 @@
   function renderAiResult() {
     var result = aiResultCopy[state.aiResult] || aiResultCopy.turning;
     var normal = ["firm", "turning", "ready", "soft"].indexOf(state.aiResult) >= 0;
-    resultBadge.textContent = result.label;
-    resultTitle.textContent = result.label;
-    if (state.aiResult === "unknown" && state.capturedSource === "user" && state.captureAssessment && state.captureAssessment.usable) {
+    var userReady = state.capturedSource === "user" && state.aiResult === "ready";
+    var objectMismatch = state.aiResult === "unknown" && state.capturedSource === "user" &&
+      state.captureAssessment && state.captureAssessment.objectMismatch;
+    resultBadge.textContent = objectMismatch ? "未识别到桃子" : (userReady ? "颜色判断" : result.label);
+    resultTitle.textContent = objectMismatch ? "请重新拍摄桃子" : (userReady ? "颜色接近适食阶段" : result.label);
+    if (objectMismatch) {
+      resultSummary.textContent = "画面主体与本品种桃果特征不匹配，系统未生成成熟度结论。请确认拍摄对象，或重新拍摄单只桃。";
+    } else if (state.aiResult === "unknown" && state.capturedSource === "user" && state.captureAssessment && state.captureAssessment.usable) {
       resultSummary.textContent = "画面可能包含桃果，但当前静态原型未接入视觉模型，不能可靠判断成熟度。请结合手感、香气和果面检查。";
     } else if (state.capturedSource === "user" && normal) {
       resultSummary.textContent = "画面符合桃果特征，系统已根据果面颜色给出成熟阶段参考。请再结合果肩手感、香气和果面检查。";
@@ -985,7 +1048,9 @@
       resultSummary.textContent = result.summary;
     }
     resultImage.src = state.capturedImage || result.image;
-    resultDisclaimer.textContent = state.capturedSource === "user"
+    resultDisclaimer.textContent = objectMismatch
+      ? "当前画面未通过桃果特征校验，不提供食用状态建议。"
+      : state.capturedSource === "user"
       ? (normal
         ? "颜色识别为原型参考，无法判断实际硬度、内部损伤、甜度或气味。"
         : "当前图像特征不足，无法可靠给出成熟阶段，请重新拍摄或使用人工判断。")
@@ -994,7 +1059,9 @@
         : "图像判断仅作提示，请以人工检查和食用安全原则为准。");
     normalResultActions.hidden = !normal;
     specialResultActions.hidden = normal;
-    specialResultButton.textContent = state.aiResult === "abnormal" ? "查看异常与售后" : "查看人工判断方法";
+    specialResultButton.textContent = state.aiResult === "abnormal"
+      ? "查看异常与售后"
+      : (objectMismatch ? "手动选择桃子状态" : "查看人工判断方法");
   }
 
   function openManual(trigger) {
@@ -1019,7 +1086,9 @@
 
   function renderAdvice() {
     var result = aiResultCopy[state.aiResult] || aiResultCopy.turning;
-    adviceStateName.textContent = result.label;
+    adviceStateName.textContent = state.capturedSource === "user" && state.aiResult === "ready"
+      ? "颜色接近适食阶段"
+      : result.label;
     adviceTitle.textContent = result.adviceTitle || "结合手感与气味再次确认";
     adviceDetail.textContent = result.advice || "请重新检查果肩手感、正常香气以及是否有霉变、异味或异常渗液。";
     adviceImage.src = result.adviceImage || "assets/ch5-storage-room.webp?v=5.12";

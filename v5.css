@@ -934,6 +934,57 @@ input {
   .result-copy { padding-top: 12px; }
 }
 
+/* v5.13 care-home and recognition review fixes */
+.scene-care-home {
+  display: grid;
+  grid-template-rows: 100px minmax(0, 1fr) auto;
+  padding-bottom: 0;
+}
+
+.scene-care-home .care-heading {
+  grid-row: 1;
+}
+
+.scene-care-home .care-hero {
+  position: relative;
+  grid-row: 2;
+  top: auto;
+  right: auto;
+  left: auto;
+  height: auto;
+  min-height: 0;
+  margin: 0;
+}
+
+.scene-care-home .care-intro {
+  position: relative;
+  z-index: 2;
+  grid-row: 3;
+  right: auto;
+  bottom: auto;
+  left: auto;
+  padding: 14px 24px 16px;
+  background: #ffffff;
+}
+
+@media (max-height: 690px) {
+  .scene-care-home {
+    grid-template-rows: 82px minmax(0, 1fr) auto;
+  }
+
+  .scene-care-home .care-hero {
+    top: auto;
+    height: auto;
+  }
+
+  .scene-care-home .care-intro {
+    right: auto;
+    bottom: auto;
+    left: auto;
+    padding: 8px 18px 10px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .start-art,
   .start-copy,
